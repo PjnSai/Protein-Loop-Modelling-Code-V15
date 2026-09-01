@@ -1,0 +1,58 @@
+# Sensitive advisor code (ignore all scripts, keep only the documentation notice)
+backend/matlab_code/*
+!backend/matlab_code/README.md
+
+
+# Sensitive environment variables & secrets
+backend/.env
+backend/.env.*
+.env
+.env.*
+
+# Python caches and generated run data
+backend/__pycache__/
+backend/instance/
+backend/flask_session/
+backend/temp_files/
+backend/uploads/
+backend/pdb_cache/
+backend/modelling_results/
+backend/demo_jobs/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Node/frontend dependencies & build folders
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+*.log
+
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

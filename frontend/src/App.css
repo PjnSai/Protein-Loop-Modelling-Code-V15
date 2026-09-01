@@ -1,0 +1,26 @@
+/* App.css */
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex-grow: 1;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
+footer {
+  background-color: #111;
+  color: #fff;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+@media (max-width: 576px) {
+  footer .text-md-end {
+    text-align: center; /* Centre-aligned text improves mobile UX */
+  }
+}

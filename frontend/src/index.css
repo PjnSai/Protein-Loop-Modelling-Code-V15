@@ -1,0 +1,28 @@
+/* index.css - Global CSS Reset and Base Styling */
+html,
+body,
+#root {
+  height: 100%; /* Full viewport height*/
+  margin: 0; /* Remove browser default margins */
+  padding: 0; /* Remove browser default padding */
+}
+
+body {
+  font-family: system-ui, sans-serif; /* Native system font*/
+  background-color: #f8f9fa; /* Light grey background*/
+  color: #212529; /* High contrast text for accessibility*/
+}
+
+#root {
+  display: flex; /* Enable flexible layout system */
+  flex-direction: column; /* Vertical stacking of main application components */
+  min-height: 100vh; /* Minimum full viewport height */
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  /* Mobile Footer Text Alignment - Override desktop text alignment for better visual balance. */
+  footer .text-md-end {
+    text-align: center; /* Centre alignment for footer content on smaller screens */
+  }
+}
