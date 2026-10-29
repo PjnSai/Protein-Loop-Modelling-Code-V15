@@ -2,33 +2,19 @@
 
 A web application that lets researchers run protein loop modelling from a browser instead of MATLAB. The user enters a PDB code, inspects the structure in 3D, chooses a loop segment and target backbone angles, and receives a modelled structure that can be compared with the original and downloaded.
 
+![Protein view with chain and segment selection](docs/images/segment-select.png)
+
 The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward. This project wraps them in a Flask API and a React interface. Third-year project, University of East Anglia, BSc Computer Science.
 
 ## Screenshots
+
+### Homepage and job history
 
 <table>
   <tr>
     <td align="center">
       <img src="docs/images/homepage.png" alt="Homepage for demo user" width="100%">
       <br>Homepage for demo user
-    </td>
-    <td align="center">
-      <img src="docs/images/enter-pdb.png" alt="PDB code selection and visualisation" width="100%">
-      <br>PDB code selection and visualisation
-    </td>
-    <td align="center">
-      <img src="docs/images/parameter-form.png" alt="Parameter form with phi/psi targets" width="100%">
-      <br>Parameter form with phi/psi targets
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="docs/images/parameter-selection.png" alt="Selected phi/psi targets, angles, constraints and iterations" width="100%">
-      <br>Selected targets, angles, constraints and iterations
-    </td>
-    <td align="center">
-      <img src="docs/images/viewer-comparison.png" alt="Original and modelled structures side by side" width="100%">
-      <br>Original and modelled structures side by side
     </td>
     <td align="center">
       <img src="docs/images/downloadable-job.png" alt="Downloadable job from job history" width="100%">
@@ -48,6 +34,31 @@ The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward.
   - **Registered mode:** results are stored in PostgreSQL with a dashboard of past jobs. Iterations are capped at 50,000 in the interface.
 - Authentication: email OTP two-factor login, bcrypt password hashing, password strength scoring (zxcvbn), breached-password checks (Have I Been Pwned), account lockout after 5 failed attempts, password reset by email, and 30-minute sessions
 - Activity log page, profile page and job dashboard with statistics
+
+### Modelling workflow
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/images/enter-pdb.png" alt="PDB code selection and visualisation" width="100%">
+      <br>PDB code selection and visualisation
+    </td>
+    <td align="center">
+      <img src="docs/images/parameter-form.png" alt="Parameter form with phi/psi targets" width="100%">
+      <br>Parameter form with phi/psi targets
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/images/parameter-selection.png" alt="Selected phi/psi targets, angles, constraints and iterations" width="100%">
+      <br>Selected targets, angles, constraints and iterations
+    </td>
+    <td align="center">
+      <img src="docs/images/viewer-comparison.png" alt="Original and modelled structures side by side" width="100%">
+      <br>Original and modelled structures side by side
+    </td>
+  </tr>
+</table>
 
 ## Architecture
 
