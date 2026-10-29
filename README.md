@@ -4,9 +4,9 @@ A web application that lets researchers run protein loop modelling from a browse
 
 The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward. This project wraps them in a Flask API and a React interface. Third-year project, University of East Anglia, BSc Computer Science.
 
-![Homepage for registered user](docs/images/registered-homepage.png)
-![Original and modelled structures side by side](docs/images/viewer-comparison.png)
-![Parameter form with phi/psi targets](docs/images/parameter-form.png)
+![Homepage for registered user](images/registered-homepage.png)
+![Original and modelled structures side by side](images/viewer-comparison.png)
+![Parameter form with phi/psi targets](images/parameter-form.png)
 
 ## Features
 
