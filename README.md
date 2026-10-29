@@ -4,6 +4,10 @@ A web application that lets researchers run protein loop modelling from a browse
 
 The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward. This project wraps them in a Flask API and a React interface. Third-year project, University of East Anglia, BSc Computer Science.
 
+![Homepage for registered user](docs/images/registered-homepage.png)
+![Original and modelled structures side by side](docs/images/viewer-comparison.png)
+![Parameter form with phi/psi targets](docs/images/parameter-form.png)
+
 ## Features
 
 - PDB lookup by 4-character code, with chain, residue range and resolution shown
@@ -55,7 +59,7 @@ frontend/
 
 ## MATLAB code
 
-`matlab_code/` contains 26 files. The algorithm is by Dr Steven Hayward. Two scripts were adapted for web use:
+`matlab_code/` contains 24 files. The algorithm is by Dr Steven Hayward. Two scripts were adapted for web use:
 
 | Original (kept for reference) | Web version (used by the server) |
 | ----------------------------- | -------------------------------- |
