@@ -10,7 +10,7 @@ The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward.
 ![Protein view with chain and segment selection](docs/images/enter-pdb.png)
 ![Parameter form with phi/psi targets](docs/images/parameter-form.png)
 ![Parameter form with selected phi/psi targets, angles, constraints and number of iteration](docs/images/parameter-selection.png)
-![Downloadable job from job history](docs/images/viewer-comparison.png)
+![Downloadable job from job history](docs/images/downloadable-job.png)
 
 ## Features
 
