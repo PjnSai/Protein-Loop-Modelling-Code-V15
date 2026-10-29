@@ -4,13 +4,38 @@ A web application that lets researchers run protein loop modelling from a browse
 
 The modelling algorithm is a set of MATLAB scripts written by Dr Steven Hayward. This project wraps them in a Flask API and a React interface. Third-year project, University of East Anglia, BSc Computer Science.
 
-![Original and modelled structures side by side](docs/images/viewer-comparison.png)
-![Homepage for demo user](docs/images/homepage.png)
-![PDB code selection and visualisation](docs/images/enter-pdb.png)
-![Protein view with chain and segment selection](docs/images/enter-pdb.png)
-![Parameter form with phi/psi targets](docs/images/parameter-form.png)
-![Parameter form with selected phi/psi targets, angles, constraints and number of iteration](docs/images/parameter-selection.png)
-![Downloadable job from job history](docs/images/downloadable-job.png)
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/images/homepage.png" alt="Homepage for demo user" width="100%">
+      <br>Homepage for demo user
+    </td>
+    <td align="center">
+      <img src="docs/images/enter-pdb.png" alt="PDB code selection and visualisation" width="100%">
+      <br>PDB code selection and visualisation
+    </td>
+    <td align="center">
+      <img src="docs/images/parameter-form.png" alt="Parameter form with phi/psi targets" width="100%">
+      <br>Parameter form with phi/psi targets
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="docs/images/parameter-selection.png" alt="Selected phi/psi targets, angles, constraints and iterations" width="100%">
+      <br>Selected targets, angles, constraints and iterations
+    </td>
+    <td align="center">
+      <img src="docs/images/viewer-comparison.png" alt="Original and modelled structures side by side" width="100%">
+      <br>Original and modelled structures side by side
+    </td>
+    <td align="center">
+      <img src="docs/images/downloadable-job.png" alt="Downloadable job from job history" width="100%">
+      <br>Downloadable job from job history
+    </td>
+  </tr>
+</table>
 
 ## Features
 
