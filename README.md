@@ -221,3 +221,9 @@ Batch processing of several proteins, role-based access control with an admin ro
 - Breached-password data: Have I Been Pwned
 
 ## Licence
+
+This project is licensed under [CC BY-NC 4.0](LICENSE). You may download, run and adapt the code for non-commercial purposes, as long as you give credit and state any changes. Commercial use is not permitted.
+
+If this project inspires your own work, a mention is appreciated.
+
+The MATLAB files in `backend/matlab_code/` are the work of Dr Steven Hayward and are not covered by this licence.
