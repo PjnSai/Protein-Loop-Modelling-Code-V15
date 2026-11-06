@@ -44,14 +44,14 @@ export const changeRepresentation = (
   setRepresentation(newRepr);
 };
 
-// Center Viewer Display
-export const centerView = (stageRef, viewerReady, viewerType) => {
+// Centre Viewer Display
+export const centreView = (stageRef, viewerReady, viewerType) => {
   // Validate viewer availability before operation
   if (!stageRef.current || !viewerReady) return;
 
   try {
     if (viewerType === "ngl") {
-      // NGL viewer centering with animation
+      // NGL viewer centring with animation
       stageRef.current.autoView(100); // 1 second animation timing
 
       // Force rendering refresh if needed
@@ -61,12 +61,12 @@ export const centerView = (stageRef, viewerReady, viewerType) => {
         }
       }, 100);
     } else {
-      // 3DMol viewer centering
+      // 3DMol viewer centring
       stageRef.current.zoomTo();
       stageRef.current.render();
     }
   } catch (err) {
-    console.error("Error centering view:", err);
+    console.error("Error centring view:", err);
   }
 };
 

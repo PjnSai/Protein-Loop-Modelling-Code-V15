@@ -22,7 +22,7 @@ const ViewerControls = ({
   // Actions
   onSwitchViewer,
   onChangeRepresentation,
-  onCenterView,
+  onCentreView,
   onResetViewer,
   onToggleExpanded,
 
@@ -105,15 +105,15 @@ const ViewerControls = ({
             )}
           </button>
 
-          {/* View Centering Control */}
+          {/* View Centring Control */}
           <button
             className="btn btn-outline-primary btn-sm me-2"
-            onClick={onCenterView}
+            onClick={onCentreView}
             disabled={isLoading || !viewerReady}
-            title="Center View"
+            title="Centre View"
           >
             <FaCrosshairs className="me-1" />
-            Center
+            Centre
           </button>
 
           {/* Viewer Reset Control */}

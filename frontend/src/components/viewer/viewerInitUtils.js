@@ -89,7 +89,7 @@ export const initialiseNGL = (
               // Apply initial representation style
               applyRepresentationCallback(structure, representation);
 
-              // Auto-view with proper centering and timing
+              // Auto-view with proper centring and timing
               setTimeout(() => {
                 stage.autoView();
               }, 100);

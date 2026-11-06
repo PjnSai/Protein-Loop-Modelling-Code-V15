@@ -23,7 +23,7 @@ import { initialiseViewer as initViewerUtil } from "./viewer/viewerInitUtils";
 import {
   switchViewer as switchViewerUtil,
   changeRepresentation as changeRepresentationUtil,
-  centerView as centerViewUtil,
+  centreView as centreViewUtil,
   resetViewer as resetViewerUtil,
 } from "./viewer/viewerControlUtils";
 
@@ -92,7 +92,7 @@ const ProteinViewer = ({
   useEffect(() => {
     setCurrentHeight(calculateViewerHeight());
 
-    // NGL viewer auto-centering with expansion state changes
+    // NGL viewer auto-centring with expansion state changes
     if (viewerReady && stageRef.current && viewerType === "ngl") {
       setTimeout(() => {
         if (stageRef.current && stageRef.current.autoView) {
@@ -174,7 +174,7 @@ const ProteinViewer = ({
           representation,
         );
 
-        // Auto-center after representation change
+        // Auto-centre after representation change
         setTimeout(() => {
           if (stageRef.current) {
             stageRef.current.autoView();
@@ -277,8 +277,8 @@ const ProteinViewer = ({
     [representation],
   );
 
-  const centerView = useCallback(() => {
-    centerViewUtil(stageRef, viewerReady, viewerType);
+  const centreView = useCallback(() => {
+    centreViewUtil(stageRef, viewerReady, viewerType);
   }, [viewerReady, viewerType]);
 
   const resetViewer = useCallback(() => {
@@ -318,7 +318,7 @@ const ProteinViewer = ({
         isExpanded={isExpanded}
         onSwitchViewer={switchViewer}
         onChangeRepresentation={changeRepresentation}
-        onCenterView={centerView}
+        onCentreView={centreView}
         onResetViewer={resetViewer}
         onToggleExpanded={handleToggleExpanded}
         showControls={showControls}
