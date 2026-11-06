@@ -1,7 +1,7 @@
 // FeaturesGrid.jsx - Application Features Showcase Component
 
 import FeatureCard from "../ui/FeatureCard";
-import { FaServer, FaCheckCircle, FaHistory } from "react-icons/fa";
+import { FaServer, FaTemperatureHigh, FaHistory } from "react-icons/fa";
 
 /* Features Configuration */
 const features = [
