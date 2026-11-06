@@ -4,7 +4,7 @@
  
  */
 
-import { FaClock, FaSpinner, FaCheck, FaTimes, FaExclamationTriangle, FaInfo, FaCircle } from 'react-icons/fa';
+import { FaSpinner, FaCheck, FaTimes, FaInfo, FaCircle } from 'react-icons/fa';
 
 /* StatusBadge Component */
 const StatusBadge = ({ status, variant = null }) => {

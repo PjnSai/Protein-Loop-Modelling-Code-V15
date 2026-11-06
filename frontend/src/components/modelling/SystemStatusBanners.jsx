@@ -1,7 +1,7 @@
 //SystemStatusBanners.jsx - System Status and User Mode Notification Component
 
 import { Link } from 'react-router-dom';
-import { FaExclamationTriangle, FaInfoCircle, FaCheck } from 'react-icons/fa';
+import { FaExclamationTriangle, FaInfoCircle } from 'react-icons/fa';
 
 // SystemStatusBanners Component
 const SystemStatusBanners = ({ 
