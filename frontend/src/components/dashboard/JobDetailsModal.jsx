@@ -1,5 +1,7 @@
 // JobDetailsModal.jsx - Job Details Modal Component
+
 import FullscreenViewer from "../viewer/FullscreenViewer";
+import useFullscreen from "../../hooks/useFullscreen";
 import StructureComparisonSection from "./StructureComparisonSection";
 import JobInfoCard from "./JobInfoCard";
 import ParametersDisplayCard from "./ParametersDisplayCard";

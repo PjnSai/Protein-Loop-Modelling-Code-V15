@@ -19,11 +19,6 @@ const UserInfoCard = ({ email }) => (
 
       {/* User Email Display */}
       <h4>{email}</h4>
-
-      {/* Membership Information */}
-      <p className="text-muted">
-        Member since {new Date().toLocaleDateString()}
-      </p>
     </div>
   </div>
 );

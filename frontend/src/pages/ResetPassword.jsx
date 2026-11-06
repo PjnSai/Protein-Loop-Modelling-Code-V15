@@ -198,9 +198,14 @@ const ResetPassword = () => {
                 <small className="text-muted">
                   <strong>Password Requirements:</strong>
                   <ul className="mb-0 mt-1">
-                    <li>At least 8 characters long</li>
-                    <li>Should not be found in known data breaches</li>
-                    <li>Use a mix of letters, numbers, and symbols</li>
+                    <ul className="mb-0 mt-1">
+                      <li>
+                        At least 8 characters, and not easy to guess (e.g. avoid
+                        common words or patterns)
+                      </li>
+                      <li>Should not be found in known data breaches</li>
+                      <li>Use a mix of letters, numbers, and symbols</li>
+                    </ul>
                   </ul>
                 </small>
               </div>

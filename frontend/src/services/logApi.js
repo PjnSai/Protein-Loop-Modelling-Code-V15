@@ -49,24 +49,12 @@ export const fetchLogs = async (currentPage, navigate) => {
   }
 };
 
-/* Delete User Activity Logs */
+/* Delete all logs, or only those older than the given number of days */
 export const deleteLogs = async (daysToDelete) => {
-  // User-friendly confirmation message based on deletion
-  const confirmMessage =
-    daysToDelete === "all"
-      ? "Are you sure you want to delete ALL login logs? This cannot be undone."
-      : `Are you sure you want to delete logs older than ${daysToDelete} days? This cannot be undone.`;
-
-  // User confirmation required for privacy protection
-  if (!confirm(confirmMessage)) {
-    return { success: false, cancelled: true };
-  }
-
   try {
-    // Prepare deletion request with appropriate parameters
     const response = await fetch("http://localhost:8000/api/logs/delete", {
       method: "DELETE",
-      credentials: "include", // Include session cookies for authentication
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -75,12 +63,9 @@ export const deleteLogs = async (daysToDelete) => {
       }),
     });
 
-    // Parse deletion response
     const data = await response.json();
 
     if (response.ok) {
-      // Success feedback to user
-      alert(data.message);
       return { success: true, message: data.message };
     } else {
       return { success: false, error: data.error || "Failed to delete logs" };

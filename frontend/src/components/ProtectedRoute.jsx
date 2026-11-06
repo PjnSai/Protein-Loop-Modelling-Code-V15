@@ -46,15 +46,4 @@ const ProtectedRoute = ({
   return children;
 };
 
-/* Higher-Order Component for Route Protection */
-export const withProtectedRoute = (Component, options = {}) => {
-  return function ProtectedComponent(props) {
-    return (
-      <ProtectedRoute {...options}>
-        <Component {...props} />
-      </ProtectedRoute>
-    );
-  };
-};
-
 export default ProtectedRoute;

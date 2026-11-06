@@ -1,7 +1,7 @@
 // FeaturesGrid.jsx - Application Features Showcase Component
 
 import FeatureCard from "../ui/FeatureCard";
-import { FaServer, FaCheckCircle, FaTemperatureHigh } from "react-icons/fa";
+import { FaServer, FaCheckCircle, FaHistory } from "react-icons/fa";
 
 /* Features Configuration */
 const features = [
@@ -16,10 +16,10 @@ const features = [
     description: "Connects seamlessly to MATLAB for loop modelling routines.",
   },
   {
-    icon: <FaCheckCircle />,
-    title: "Real-time Job Monitoring",
+    icon: <FaHistory />,
+    title: "Job History",
     description:
-      "Track modelling progress with automatic refresh and feedback.",
+      "View, download and manage past modelling jobs from your dashboard.",
   },
 ];
 

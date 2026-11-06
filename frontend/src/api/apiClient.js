@@ -112,103 +112,9 @@ class ApiClient {
       body: JSON.stringify(profileData),
     });
   }
-
-  /* Get User Activity Logs */
-  async getUserLogs(page = 1) {
-    return this.request(`/api/logs?page=${page}`);
-  }
-
-  /* Dashboard API Endpoints */
-
-  /* Check Authentication Status */
+  /* Check whether the current session is logged in */
   async checkAuthStatus() {
     return this.request("/dashboard");
-  }
-
-  /* Get Dashboard Jobs */
-  async getDashboardJobs(page = 1) {
-    return this.request(`/api/dashboard/jobs?page=${page}`);
-  }
-
-  /* Get Dashboard Statistics */
-  async getDashboardStats() {
-    return this.request("/api/dashboard/statistics");
-  }
-
-  /* Get Job Details */
-  async getJobDetails(jobId) {
-    return this.request(`/api/dashboard/job/${jobId}`);
-  }
-
-  /* Protein Loop Modelling API Endpoints */
-  async fetchPDBStructure(pdbCode) {
-    return this.request(`/api/pdb/fetch/${pdbCode}`);
-  }
-
-  /* Search PDB Database */
-  async searchPDB(query) {
-    return this.request(`/api/demo/pdb/search?q=${encodeURIComponent(query)}`);
-  }
-
-  /* Fetch PDB Structure (Demo Mode) */
-  async fetchDemoPDB(pdbCode) {
-    return this.request(`/api/demo/pdb/fetch/${pdbCode}`);
-  }
-
-  /* Prepare Modelling Parameters */
-  async prepareModelling(data) {
-    return this.request("/api/demo/modelling/prepare", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  /* Submit Modelling Job */
-  async submitModelling(data, isDemo = false) {
-    const endpoint = isDemo
-      ? "/api/demo/modelling/submit"
-      : "/api/modelling/submit";
-    return this.request(endpoint, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-  }
-
-  /* Get Job Status */
-  async getJobStatus(jobId) {
-    return this.request(`/api/modelling/job/${jobId}/status`);
-  }
-
-  /* Get Job with Results */
-  async getJobWithResults(jobId) {
-    return this.request(`/api/modelling/job/${jobId}/details`);
-  }
-
-  /* Download Job Results */
-  async downloadJobResults(jobId, isDemo = false) {
-    const endpoint = isDemo
-      ? `/api/demo/job/${jobId}/download`
-      : `/api/modelling/job/${jobId}/download`;
-
-    const url = `${this.baseURL}${endpoint}`;
-    return fetch(url, { credentials: "include" });
-  }
-
-  /* Cancel Running Job */
-  async cancelJob(jobId) {
-    return this.request(`/api/modelling/job/${jobId}/cancel`, {
-      method: "DELETE",
-    });
-  }
-
-  /* Get Modelling System Status */
-  async getModellingSystemStatus() {
-    return this.request("/api/modelling/status");
-  }
-
-  /* Get System Health */
-  async getSystemHealth() {
-    return this.request("/api/health");
   }
 }
 
@@ -216,15 +122,13 @@ class ApiClient {
 const apiClient = new ApiClient();
 export default apiClient;
 
-/* Modular API Exports for Backward Compatibility */
-
+/* Grouped exports used by api/auth.js and api/user.js */
 /* Authentication API Module */
 export const authAPI = {
   login: (data) => apiClient.login(data),
   register: (data) => apiClient.register(data),
   verifyOTP: (email, otp) => apiClient.verifyOTP(email, otp),
   resendOTP: (email) => apiClient.resendOTP(email),
-  logout: () => apiClient.logout(),
   requestPasswordReset: (email) => apiClient.requestPasswordReset(email),
   resetPassword: (email, token, password) =>
     apiClient.resetPassword(email, token, password),
@@ -235,28 +139,4 @@ export const authAPI = {
 export const userAPI = {
   getProfile: () => apiClient.getProfile(),
   updateProfile: (data) => apiClient.updateProfile(data),
-  getUserLogs: (page) => apiClient.getUserLogs(page),
-};
-
-/* Modelling API Module */
-export const modellingAPI = {
-  fetchPDBStructure: (pdbCode) => apiClient.fetchPDBStructure(pdbCode),
-  searchPDB: (query) => apiClient.searchPDB(query),
-  fetchDemoPDB: (pdbCode) => apiClient.fetchDemoPDB(pdbCode),
-  prepareModelling: (data) => apiClient.prepareModelling(data),
-  submitModelling: (data, isDemo) => apiClient.submitModelling(data, isDemo),
-  getJobStatus: (jobId) => apiClient.getJobStatus(jobId),
-  getJobWithResults: (jobId) => apiClient.getJobWithResults(jobId),
-  downloadJobResults: (jobId, isDemo) =>
-    apiClient.downloadJobResults(jobId, isDemo),
-  cancelJob: (jobId) => apiClient.cancelJob(jobId),
-  getSystemStatus: () => apiClient.getModellingSystemStatus(),
-};
-
-/* Dashboard API Module */
-export const dashboardAPI = {
-  checkAuthStatus: () => apiClient.checkAuthStatus(),
-  getJobs: (page) => apiClient.getDashboardJobs(page),
-  getStats: () => apiClient.getDashboardStats(),
-  getJobDetails: (jobId) => apiClient.getJobDetails(jobId),
 };

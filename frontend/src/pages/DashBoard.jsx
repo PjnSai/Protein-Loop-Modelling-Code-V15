@@ -1,10 +1,10 @@
 /* DashBoard.jsx - Job Management Dashboard */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 
 // UI Components
-import { LoadingSpinner, ErrorAlert } from "../components/ui";
+import { LoadingSpinner, ErrorAlert, ConfirmDialog } from "../components/ui";
 
 // Dashboard-specific components for modular interface
 import StatisticsCards from "../components/dashboard/StatisticsCards";
@@ -27,11 +27,13 @@ const DashBoard = () => {
 
   // Dashboard Analytics
   const [statistics, setStatistics] = useState({}); // User statistics and system metrics
+  const [confirmAction, setConfirmAction] = useState(null);
 
   /* Effect Hook - Data Loading */
   useEffect(() => {
     fetchJobs(); // Load job listings for current page
     fetchStatistics(); // Load user activity statistics
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]); // Re-run when pagination changes
 
   /* Fetch Jobs from API */
@@ -141,10 +143,20 @@ const DashBoard = () => {
     }
   };
 
-  /* Cancel Running Job */
-  const cancelJob = async (jobId) => {
-    if (!confirm("Are you sure you want to cancel this job?")) return;
+  /* Ask for confirmation before cancelling a job */
+  const cancelJob = (jobId) => {
+    setConfirmAction({
+      title: "Cancel Job",
+      message: "Are you sure you want to cancel this job?",
+      confirmText: "Cancel Job",
+      cancelText: "Keep Job",
+      variant: "warning",
+      onConfirm: () => performCancelJob(jobId),
+    });
+  };
 
+  /* Send the cancel request (runs only after the user confirms) */
+  const performCancelJob = async (jobId) => {
     try {
       const response = await fetch(
         `http://localhost:8000/api/modelling/job/${jobId}/cancel`,
@@ -155,7 +167,7 @@ const DashBoard = () => {
       );
 
       if (response.ok) {
-        fetchJobs(); // Refresh the jobs list
+        fetchJobs();
       } else {
         const data = await response.json();
         setError(data.error || "Failed to cancel job");
@@ -165,15 +177,21 @@ const DashBoard = () => {
     }
   };
 
-  /* Delete Completed Job */
-  const deleteJob = async (jobId) => {
-    if (
-      !confirm(
+  /* Ask the user to confirm before deleting */
+  const deleteJob = (jobId) => {
+    setConfirmAction({
+      title: "Delete Job",
+      message:
         "Are you sure you want to permanently delete this job? This action cannot be undone.",
-      )
-    )
-      return;
+      confirmText: "Delete",
+      cancelText: "Keep Job",
+      variant: "danger",
+      onConfirm: () => performDeleteJob(jobId),
+    });
+  };
 
+  /* Send the delete request (runs only after the user confirms) */
+  const performDeleteJob = async (jobId) => {
     try {
       const response = await fetch(
         `http://localhost:8000/api/modelling/job/${jobId}/delete`,
@@ -184,7 +202,7 @@ const DashBoard = () => {
       );
 
       if (response.ok) {
-        fetchJobs(); // Refresh the jobs list
+        fetchJobs();
       } else {
         const data = await response.json();
         setError(data.error || "Failed to delete job");
@@ -259,6 +277,19 @@ const DashBoard = () => {
         onClose={() => setShowJobModal(false)}
         onDownloadResults={downloadResults}
         formatDate={formatDate}
+      />
+      <ConfirmDialog
+        isOpen={!!confirmAction}
+        title={confirmAction?.title}
+        message={confirmAction?.message}
+        confirmText={confirmAction?.confirmText}
+        cancelText={confirmAction?.cancelText}
+        variant={confirmAction?.variant}
+        onConfirm={() => {
+          confirmAction.onConfirm();
+          setConfirmAction(null);
+        }}
+        onCancel={() => setConfirmAction(null)}
       />
     </div>
   );

@@ -83,7 +83,7 @@ export const useAuth = () => {
   };
 
   /* Permission Check Helper */
-  const hasPermission = (permission) => {
+  const hasPermission = () => {
     // For now, just check if authenticated
     // Later can add role-based permissions
     return isAuthenticated;

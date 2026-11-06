@@ -12,10 +12,5 @@ export const updateProfile = userAPI.updateProfile;
 
 /* User Activity Monitoring Functions */
 
-/* Retrieve User Activity Logs with Pagination */
-export const getLoginLog = userAPI.getUserLogs;
-
-/* Security Operations */
-
 /* Secure Password Change with Validation */
 export const changePassword = authAPI.changePassword;

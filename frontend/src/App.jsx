@@ -69,7 +69,9 @@ export default function App() {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <ProfilePage />
+                  <ErrorBoundary>
+                    <ProfilePage />
+                  </ErrorBoundary>
                 </ProtectedRoute>
               }
             />
@@ -78,7 +80,9 @@ export default function App() {
               path="/logs"
               element={
                 <ProtectedRoute>
-                  <LoginLog />
+                  <ErrorBoundary>
+                    <LoginLog />
+                  </ErrorBoundary>
                 </ProtectedRoute>
               }
             />
@@ -117,7 +121,7 @@ export default function App() {
                   {/* Monitoring Feature */}
                   <div className="d-flex align-items-center justify-content-md-end">
                     <FaChartBar className="me-2 text-primary" />
-                    <span>Real-time Job Monitoring</span>
+                    <span>Job History</span>
                   </div>
                 </div>
               </div>

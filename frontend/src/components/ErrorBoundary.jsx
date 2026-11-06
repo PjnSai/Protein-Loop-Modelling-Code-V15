@@ -14,7 +14,7 @@ class ErrorBoundary extends React.Component {
   }
 
   // Static Error State Derivation
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     // Update state so the next render will show the fallback UI
     return { hasError: true };
   }
@@ -99,23 +99,21 @@ class ErrorBoundary extends React.Component {
                   </div>
 
                   {/* Development Error Details */}
-                  {process.env.NODE_ENV === "development" &&
-                    this.state.error && (
-                      <div className="mt-3">
-                        <h6>Development Error Details:</h6>
-                        <div className="bg-light p-3 rounded">
-                          <small>
-                            <strong>Error:</strong>{" "}
-                            {this.state.error.toString()}
-                            <br />
-                            <strong>Component Stack:</strong>
-                            <pre className="mt-1 small text-muted">
-                              {this.state.errorInfo.componentStack}
-                            </pre>
-                          </small>
-                        </div>
+                  {import.meta.env.DEV && this.state.error && (
+                    <div className="mt-3">
+                      <h6>Development Error Details:</h6>
+                      <div className="bg-light p-3 rounded">
+                        <small>
+                          <strong>Error:</strong> {this.state.error.toString()}
+                          <br />
+                          <strong>Component Stack:</strong>
+                          <pre className="mt-1 small text-muted">
+                            {this.state.errorInfo.componentStack}
+                          </pre>
+                        </small>
                       </div>
-                    )}
+                    </div>
+                  )}
                 </div>
 
                 {/* User Guidance Footer */}
@@ -138,33 +136,3 @@ class ErrorBoundary extends React.Component {
 }
 
 export default ErrorBoundary;
-
-/* Higher-Order Component for Error Boundary Wrapping */
-export const withErrorBoundary = (Component, fallbackProps = {}) => {
-  return function WrappedComponent(props) {
-    return (
-      <ErrorBoundary {...fallbackProps}>
-        <Component {...props} />
-      </ErrorBoundary>
-    );
-  };
-};
-
-/* Error Handler Hook for Functional Components */
-export const useErrorHandler = () => {
-  const [error, setError] = React.useState(null);
-
-  const resetError = () => setError(null);
-
-  const handleError = React.useCallback((error) => {
-    console.error("Handled error:", error);
-    setError(error);
-  }, []);
-
-  // Throw error to trigger error boundary
-  if (error) {
-    throw error;
-  }
-
-  return { handleError, resetError };
-};

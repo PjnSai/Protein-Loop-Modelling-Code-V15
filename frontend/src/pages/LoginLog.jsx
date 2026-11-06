@@ -11,6 +11,8 @@ import LogsTableSection from "../components/logs/LogsTableSection";
 import SecurityInfoSection from "../components/logs/SecurityInfoSection";
 import LogsHeader from "../components/logs/LogsHeader";
 
+import { ConfirmDialog } from "../components/ui";
+
 /* LoginLog Component*/
 const LoginLog = () => {
   // Log Data Management
@@ -30,9 +32,13 @@ const LoginLog = () => {
   // Navigation for authentication redirection
   const navigate = useNavigate();
 
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
   /* Effect Hook - Log Data Loading */
   useEffect(() => {
     fetchLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]); // Fetch again when pagination changes
 
   /* Fetch Activity Logs from API */
@@ -77,20 +83,32 @@ const LoginLog = () => {
     );
   }
 
-  /* Delete User Activity Logs */
-  const deleteLogs = async () => {
+  /* Ask the user to confirm before deleting logs */
+  const deleteLogs = () => {
+    setConfirmAction({
+      title: "Delete Logs",
+      message:
+        daysToDelete === "all"
+          ? "Are you sure you want to delete ALL login logs? This cannot be undone."
+          : `Are you sure you want to delete logs older than ${daysToDelete} days? This cannot be undone.`,
+      confirmText: "Delete",
+      cancelText: "Keep Logs",
+      variant: "danger",
+      onConfirm: performDeleteLogs,
+    });
+  };
+
+  /* Send the delete request (runs only after the user confirms) */
+  const performDeleteLogs = async () => {
     setIsDeleting(true);
+    setSuccessMessage(null);
 
     try {
       const result = await logApi.deleteLogs(daysToDelete);
 
-      // Handle user cancellation
-      if (result.cancelled) {
-        return;
-      }
-
       if (result.success) {
-        fetchLogs(); // Refresh logs after successful deletion
+        setSuccessMessage(result.message);
+        fetchLogs();
       } else {
         setError(result.error);
       }
@@ -128,8 +146,20 @@ const LoginLog = () => {
         </div>
       )}
 
+      {successMessage && (
+        <div className="alert alert-success alert-dismissible" role="alert">
+          {successMessage}
+          <button
+            type="button"
+            className="btn-close"
+            onClick={() => setSuccessMessage(null)}
+            aria-label="Close"
+          ></button>
+        </div>
+      )}
+
       {/* Development Debug Information */}
-      {process.env.NODE_ENV === "development" && (
+      {import.meta.env.DEV && (
         <div className="alert alert-info">
           <small>
             <strong>Debug:</strong> Logs count: {logs.length}, Current page:{" "}
@@ -151,6 +181,19 @@ const LoginLog = () => {
 
       {/* Security Information Section */}
       <SecurityInfoSection />
+      <ConfirmDialog
+        isOpen={!!confirmAction}
+        title={confirmAction?.title}
+        message={confirmAction?.message}
+        confirmText={confirmAction?.confirmText}
+        cancelText={confirmAction?.cancelText}
+        variant={confirmAction?.variant}
+        onConfirm={() => {
+          confirmAction.onConfirm();
+          setConfirmAction(null);
+        }}
+        onCancel={() => setConfirmAction(null)}
+      />
     </div>
   );
 };

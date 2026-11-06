@@ -26,3 +26,13 @@ body {
     text-align: center; /* Centre alignment for footer content on smaller screens */
   }
 }
+
+/* Rotation for spinner icons */
+.fa-spin {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

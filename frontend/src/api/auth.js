@@ -24,17 +24,3 @@ export const resetPassword = authAPI.resetPassword;
 // User Registration Function with Parameter Adaptation
 export const register = (email, password) =>
   authAPI.register({ email, password });
-
-/* Dynamic Import Functions for User Management */
-
-/* User Profile Information Retrieval (Dynamic Import) */
-export const getProfile = () =>
-  import("./apiClient").then(({ userAPI }) => userAPI.getProfile());
-
-/* User Profile Information Update (Dynamic Import) */
-export const updateProfile = (data) =>
-  import("./apiClient").then(({ userAPI }) => userAPI.updateProfile(data));
-
-/* Authenticated Password Change (Dynamic Import) */
-export const changePassword = (data) =>
-  import("./apiClient").then(({ authAPI }) => authAPI.changePassword(data));

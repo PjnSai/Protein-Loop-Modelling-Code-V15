@@ -10,6 +10,7 @@ import {
   FaUser,
   FaCog,
   FaSignOutAlt,
+  FaSignInAlt,
 } from "react-icons/fa";
 import useAuth from "../hooks/useAuth";
 
@@ -154,7 +155,7 @@ const Navigation = () => {
               <>
                 <li className="nav-item">
                   <Link to="/login" className="nav-link">
-                    <FaSignOutAlt className="me-1" />
+                    <FaSignInAlt className="me-1" />
                     Login
                   </Link>
                 </li>

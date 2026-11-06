@@ -158,6 +158,7 @@ const ProteinViewer = ({
     if (viewerReady && stageRef.current) {
       updateVisualisation();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [representation, selectedChain, segmentStart, segmentEnd, viewerReady]);
 
   /* Visualisation Update Handler */
