@@ -1,13 +1,18 @@
 // ResetPasswordForm.jsx - Password Reset Completion Form Component
 
-import React from 'react';
-import InputField from '../ui/InputField';
+import React from "react";
+import InputField from "../ui/InputField";
 
 /* ResetPasswordForm Component */
-export default function ResetPasswordForm({ formData, onChange, onSubmit, isLoading, error }) {
+export default function ResetPasswordForm({
+  formData,
+  onChange,
+  onSubmit,
+  isLoading,
+  error,
+}) {
   return (
     <form onSubmit={onSubmit}>
-      
       {/* New Password Input */}
       <InputField
         label="New Password"
@@ -18,10 +23,11 @@ export default function ResetPasswordForm({ formData, onChange, onSubmit, isLoad
         disabled={isLoading}
         placeholder="Enter new password"
       />
-      
+
       {/* Password Security Requirements */}
       <div className="form-text mb-3">
-        Password must be at least 8 characters and should not be found in data breaches.
+        Password must be at least 8 characters and should not be found in data
+        breaches.
       </div>
 
       {/* Password Confirmation Input */}
@@ -55,11 +61,10 @@ export default function ResetPasswordForm({ formData, onChange, onSubmit, isLoad
               Updating Password...
             </>
           ) : (
-            'Update Password'
+            "Update Password"
           )}
         </button>
       </div>
-      
     </form>
   );
 }

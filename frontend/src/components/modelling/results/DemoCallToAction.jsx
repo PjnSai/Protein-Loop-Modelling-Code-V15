@@ -1,27 +1,25 @@
 // DemoCallToAction.jsx - Demo User Engagement Component
 
-import React from 'react';
+import React from "react";
 
 // DemoCallToAction Component
 const DemoCallToAction = ({ onRegister, onLogin }) => {
   return (
     <div className="card mt-4 border-primary">
-      
       {/* Engagement Header */}
       <div className="card-header bg-primary text-white">
         <h6 className="mb-0">Ready for Real Loop Modelling?</h6>
       </div>
-      
+
       {/* Value Proposition Content */}
       <div className="card-body">
         <p className="mb-3">
-          This demo showed you what our protein loop modelling can do. 
-          Register now to access:
+          This demo showed you what our protein loop modelling can do. Register
+          now to access:
         </p>
-        
+
         {/* Feature Benefits Grid */}
         <div className="row">
-          
           {/* Technical Capabilities Column */}
           <div className="col-md-6">
             <ul className="list-unstyled">
@@ -30,7 +28,7 @@ const DemoCallToAction = ({ onRegister, onLogin }) => {
               <li>Advanced parameter control</li>
             </ul>
           </div>
-          
+
           {/* Workflow Benefits Column */}
           <div className="col-md-6">
             <ul className="list-unstyled">
@@ -40,19 +38,13 @@ const DemoCallToAction = ({ onRegister, onLogin }) => {
             </ul>
           </div>
         </div>
-        
+
         {/* Call-to-Action Buttons */}
         <div className="text-center">
-          <button
-            className="btn btn-primary btn-lg me-2"
-            onClick={onRegister}
-          >
+          <button className="btn btn-primary btn-lg me-2" onClick={onRegister}>
             Create Free Account
           </button>
-          <button
-            className="btn btn-outline-primary btn-lg"
-            onClick={onLogin}
-          >
+          <button className="btn btn-outline-primary btn-lg" onClick={onLogin}>
             Sign In
           </button>
         </div>

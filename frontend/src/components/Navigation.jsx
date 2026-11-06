@@ -1,8 +1,17 @@
 /* Navigation.jsx - Main Application Navigation Component */
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaDna, FaHome, FaFlask, FaChartBar, FaList, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
-import useAuth from '../hooks/useAuth';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaDna,
+  FaHome,
+  FaFlask,
+  FaChartBar,
+  FaList,
+  FaUser,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import useAuth from "../hooks/useAuth";
 
 /* Navigation Component */
 const Navigation = () => {
@@ -16,13 +25,13 @@ const Navigation = () => {
     try {
       const result = await logout();
       if (result.success) {
-        navigate('/');
+        navigate("/");
       } else {
-        console.error('Logout failed:', result.error);
+        console.error("Logout failed:", result.error);
         // Could show error here in future
       }
     } catch (err) {
-      console.error('Logout error:', err);
+      console.error("Logout error:", err);
     } finally {
       setIsLoggingOut(false);
     }
@@ -48,18 +57,17 @@ const Navigation = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow">
       <div className="container-fluid px-3">
-        
         {/* Application Branding */}
         <Link to="/" className="navbar-brand fw-bold">
           <FaDna className="me-2" />
           Loop Modeller
         </Link>
-        
+
         {/* Mobile Menu Toggle Button */}
-        <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
           aria-controls="navbarNav"
           aria-expanded="false"
@@ -67,10 +75,9 @@ const Navigation = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        
+
         {/* Navigation Menu Content */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          
           {/* Primary Navigation Links */}
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
@@ -85,7 +92,7 @@ const Navigation = () => {
                 Loop Modelling
               </Link>
             </li>
-            
+
             {/* Authenticated User Navigation Links */}
             {isAuthenticated && (
               <>
@@ -104,21 +111,21 @@ const Navigation = () => {
               </>
             )}
           </ul>
-          
+
           {/* User Account Section */}
           <ul className="navbar-nav">
             {isAuthenticated ? (
               // Authenticated User Dropdown Menu
               <li className="nav-item dropdown">
-                <a 
-                  className="nav-link dropdown-toggle" 
-                  href="#" 
-                  role="button" 
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
                   <FaUser className="me-1" />
-                  {user?.email || 'User'}
+                  {user?.email || "User"}
                 </a>
                 <ul className="dropdown-menu">
                   <li>
@@ -127,15 +134,17 @@ const Navigation = () => {
                       Profile Settings
                     </Link>
                   </li>
-                  <li><hr className="dropdown-divider" /></li>
                   <li>
-                    <button 
-                      className="dropdown-item" 
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <button
+                      className="dropdown-item"
                       onClick={handleLogout}
                       disabled={isLoggingOut}
                     >
                       <FaSignOutAlt className="me-2" />
-                      {isLoggingOut ? 'Logging out...' : 'Logout'}
+                      {isLoggingOut ? "Logging out..." : "Logout"}
                     </button>
                   </li>
                 </ul>
@@ -158,7 +167,6 @@ const Navigation = () => {
               </>
             )}
           </ul>
-          
         </div>
       </div>
     </nav>

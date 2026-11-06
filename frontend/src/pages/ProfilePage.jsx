@@ -1,40 +1,40 @@
 /* ProfilePage.jsx - User Profile Management Interface */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 // API services for user profile management
-import { getProfile, updateProfile, changePassword } from '../api/user';
+import { getProfile, updateProfile, changePassword } from "../api/user";
 
 // Validation utilities for form input checking
-import { validatePassword } from '../utils/validators';
+import { validatePassword } from "../utils/validators";
 
-// Component imports for modular interface 
-import UserInfoCard from '../components/widgets/UserInfoCard';
-import ProfileInfoForm from '../components/forms/ProfileInfoForm';
-import ChangePasswordForm from '../components/forms/ChangePasswordForm';
+// Component imports for modular interface
+import UserInfoCard from "../components/widgets/UserInfoCard";
+import ProfileInfoForm from "../components/forms/ProfileInfoForm";
+import ChangePasswordForm from "../components/forms/ChangePasswordForm";
 
 /* ProfilePage Component */
 const ProfilePage = () => {
   // Profile Information State
   const [profile, setProfile] = useState({
-    first_name: '',      // User's first name
-    last_name: '',       // User's last name
-    institution: '',     // Academic or research institution
-    bio: '',             // Professional biography or research interests
-    email: '',           // Account email address (read-only)
+    first_name: "", // User's first name
+    last_name: "", // User's last name
+    institution: "", // Academic or research institution
+    bio: "", // Professional biography or research interests
+    email: "", // Account email address (read-only)
   });
 
   // Password Management State
   const [passwordData, setPasswordData] = useState({
-    current_password: '',    // Current password for verification
-    new_password: '',        // New password for update
-    confirm_password: '',    // Password confirmation for validation
+    current_password: "", // Current password for verification
+    new_password: "", // New password for update
+    confirm_password: "", // Password confirmation for validation
   });
 
   // UI State Management
   const [showPasswordChange, setShowPasswordChange] = useState(false); // Password form visibility
-  const [isSaving, setIsSaving] = useState(false);                     // Save operation feedback
-  const [error, setError] = useState(null);                           // Error display management
+  const [isSaving, setIsSaving] = useState(false); // Save operation feedback
+  const [error, setError] = useState(null); // Error display management
 
   /* Effect Hook - Profile Data Loading */
   useEffect(() => {
@@ -44,10 +44,10 @@ const ProfilePage = () => {
         if (ok) {
           setProfile(data);
         } else {
-          setError(data?.error || 'Failed to load profile.');
+          setError(data?.error || "Failed to load profile.");
         }
       } catch {
-        setError('Network error. Please try again.');
+        setError("Network error. Please try again.");
       }
     };
     fetchProfile();
@@ -57,17 +57,17 @@ const ProfilePage = () => {
   const updateProfileHandler = async (e) => {
     e.preventDefault();
     setIsSaving(true);
-    
+
     try {
       const { ok, data } = await updateProfile(profile);
       if (!ok) {
-        setError(data?.error || 'Failed to update profile.');
+        setError(data?.error || "Failed to update profile.");
       } else {
         // Clear error on successful update
         setError(null);
       }
     } catch {
-      setError('Error updating profile.');
+      setError("Error updating profile.");
     } finally {
       setIsSaving(false);
     }
@@ -86,28 +86,28 @@ const ProfilePage = () => {
     }
 
     setIsSaving(true);
-    
+
     try {
-      const { ok, data } = await changePassword({ 
-        current_password, 
-        new_password, 
-        confirm_password 
+      const { ok, data } = await changePassword({
+        current_password,
+        new_password,
+        confirm_password,
       });
-      
+
       if (ok) {
         // Successful password change - reset form and hide interface
         setShowPasswordChange(false);
         setPasswordData({
-          current_password: '',
-          new_password: '',
-          confirm_password: '',
+          current_password: "",
+          new_password: "",
+          confirm_password: "",
         });
         setError(null);
       } else {
-        setError(data?.error || 'Password change failed.');
+        setError(data?.error || "Password change failed.");
       }
     } catch {
-      setError('Network error. Please try again.');
+      setError("Network error. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -130,40 +130,46 @@ const ProfilePage = () => {
       {/* Profile Information Form */}
       <ProfileInfoForm
         profileData={profile}
-        onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
+        onChange={(e) =>
+          setProfile({ ...profile, [e.target.name]: e.target.value })
+        }
         onSubmit={updateProfileHandler}
         isSaving={isSaving}
       />
 
       {/* Password Management Section */}
       <h4 className="mt-4">Change Password</h4>
-      
+
       {showPasswordChange ? (
         // Password Change Form - Visible when activated
         <ChangePasswordForm
           passwordData={passwordData}
-          onChange={(e) => setPasswordData({ ...passwordData, [e.target.name]: e.target.value })}
+          onChange={(e) =>
+            setPasswordData({
+              ...passwordData,
+              [e.target.name]: e.target.value,
+            })
+          }
           onSubmit={changePasswordHandler}
           isSaving={isSaving}
           onCancel={() => {
             setShowPasswordChange(false);
-            setPasswordData({ 
-              current_password: '', 
-              new_password: '', 
-              confirm_password: '' 
+            setPasswordData({
+              current_password: "",
+              new_password: "",
+              confirm_password: "",
             });
           }}
         />
       ) : (
         // Password Change Activation Button
-        <button 
-          className="btn btn-outline-primary" 
+        <button
+          className="btn btn-outline-primary"
           onClick={() => setShowPasswordChange(true)}
         >
           Change Password
         </button>
       )}
-      
     </div>
   );
 };

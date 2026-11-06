@@ -1,15 +1,14 @@
 // SegmentValidationCard.jsx - Scientific Segment Validation Interface
 
-import React from 'react';
-import { FaInfoCircle } from 'react-icons/fa';
+import React from "react";
+import { FaInfoCircle } from "react-icons/fa";
 
 // SegmentValidationCard Component
-const SegmentValidationCard = ({ 
-  selectedChain,       // Currently selected protein chain identifier
-  pdbData,            // Complete protein structure data with analysis
-  modellingParams     // Current modelling parameters with segment information
+const SegmentValidationCard = ({
+  selectedChain, // Currently selected protein chain identifier
+  pdbData, // Complete protein structure data with analysis
+  modellingParams, // Current modelling parameters with segment information
 }) => {
-  
   // Component Display Validation
   if (!selectedChain || !pdbData.analysis?.residues?.[selectedChain]) {
     return null;
@@ -28,14 +27,17 @@ const SegmentValidationCard = ({
     }
 
     // Boundary Validation
-    if (segmentStart < chainData.range?.[0] || segmentEnd > chainData.range?.[1]) {
+    if (
+      segmentStart < chainData.range?.[0] ||
+      segmentEnd > chainData.range?.[1]
+    ) {
       return (
         <div className="alert alert-warning alert-sm">
           Segment outside chain range
         </div>
       );
     }
-    
+
     // Minimum Length Validation
     if (segmentEnd - segmentStart < 3) {
       return (
@@ -44,7 +46,7 @@ const SegmentValidationCard = ({
         </div>
       );
     }
-    
+
     // Processing Complexity Warning
     if (segmentEnd - segmentStart > 20) {
       return (
@@ -54,7 +56,7 @@ const SegmentValidationCard = ({
         </div>
       );
     }
-    
+
     // Valid Configuration Confirmation
     return (
       <div className="alert alert-success alert-sm">
@@ -65,26 +67,27 @@ const SegmentValidationCard = ({
 
   return (
     <div className="card mt-3">
-      
       {/* Card Header with Chain Identification */}
       <div className="card-header">
         <h6>Chain {selectedChain} Information</h6>
       </div>
-      
+
       {/* Chain Information and Validation Content */}
       <div className="card-body">
-        
         {/* Chain Residue Range Information */}
-        <p><strong>Residue Range:</strong> {chainData.range?.[0]} - {chainData.range?.[1]}</p>
-        
+        <p>
+          <strong>Residue Range:</strong> {chainData.range?.[0]} -{" "}
+          {chainData.range?.[1]}
+        </p>
+
         {/* Total Residue Count */}
-        <p><strong>Total Residues:</strong> {chainData.count}</p>
-        
+        <p>
+          <strong>Total Residues:</strong> {chainData.count}
+        </p>
+
         {/* Real-time Segment Validation Feedback */}
         {modellingParams.segment_start && modellingParams.segment_end && (
-          <div className="mt-2">
-            {getValidationAlert()}
-          </div>
+          <div className="mt-2">{getValidationAlert()}</div>
         )}
       </div>
     </div>

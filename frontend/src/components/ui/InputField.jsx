@@ -1,12 +1,21 @@
 /* InputField.jsx - Standardised Form Input Component */
 
 /* InputField Component */
-const InputField = ({ label, type, name, value, onChange, disabled, placeholder }) => (
+const InputField = ({
+  label,
+  type,
+  name,
+  value,
+  onChange,
+  disabled,
+  placeholder,
+}) => (
   <div className="mb-3">
-    
     {/* Input Label with Accessibility Association */}
-    <label htmlFor={name} className="form-label">{label}</label>
-    
+    <label htmlFor={name} className="form-label">
+      {label}
+    </label>
+
     {/* Form Input with Bootstrap Styling */}
     <input
       type={type}
@@ -19,7 +28,6 @@ const InputField = ({ label, type, name, value, onChange, disabled, placeholder 
       disabled={disabled}
       placeholder={placeholder}
     />
-    
   </div>
 );
 

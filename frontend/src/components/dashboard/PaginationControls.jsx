@@ -1,12 +1,7 @@
 //PaginationControls.jsx - Table Pagination Navigation Component
 
 /* PaginationControls Component */
-const PaginationControls = ({ 
-  currentPage, 
-  totalPages, 
-  onPageChange 
-}) => {
-  
+const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
   /* Single Page Condition Check */
   if (totalPages <= 1) {
     return null;
@@ -31,10 +26,9 @@ const PaginationControls = ({
       <nav>
         {/* Bootstrap Pagination with Accessibility Features */}
         <ul className="pagination pagination-sm justify-content-center mb-0">
-          
           {/* Previous Page Navigation Button */}
-          <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-            <button 
+          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+            <button
               className="page-link"
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
@@ -43,24 +37,29 @@ const PaginationControls = ({
               Previous
             </button>
           </li>
-          
+
           {/* Dynamic Page Number Generation */}
           {[...Array(totalPages)].map((_, i) => (
-            <li key={i + 1} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-              <button 
+            <li
+              key={i + 1}
+              className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+            >
+              <button
                 className="page-link"
                 onClick={() => onPageChange(i + 1)}
                 aria-label={`Navigate to page ${i + 1}`}
-                aria-current={currentPage === i + 1 ? 'page' : undefined}
+                aria-current={currentPage === i + 1 ? "page" : undefined}
               >
                 {i + 1}
               </button>
             </li>
           ))}
-          
+
           {/* Next Page Navigation Button */}
-          <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-            <button 
+          <li
+            className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
+          >
+            <button
               className="page-link"
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
@@ -69,7 +68,6 @@ const PaginationControls = ({
               Next
             </button>
           </li>
-          
         </ul>
       </nav>
     </div>

@@ -1,7 +1,7 @@
 /* apiClient.js - Centralised API Client */
 
 // API base URL configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 /* ApiClient Class */
 class ApiClient {
@@ -13,9 +13,9 @@ class ApiClient {
   async request(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
     const config = {
-      credentials: 'include',  // Include session cookies for authentication
+      credentials: "include", // Include session cookies for authentication
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
@@ -26,74 +26,74 @@ class ApiClient {
       const data = await response.json();
       return { ok: response.ok, data, status: response.status };
     } catch (error) {
-      console.error('API Request failed:', error);
-      return { 
-        ok: false, 
-        data: { error: 'Network error. Please try again.' },
-        status: 0 
+      console.error("API Request failed:", error);
+      return {
+        ok: false,
+        data: { error: "Network error. Please try again." },
+        status: 0,
       };
     }
   }
 
   /* Authentication API Endpoints */
   async login(credentials) {
-    return this.request('/auth/login', {
-      method: 'POST',
+    return this.request("/auth/login", {
+      method: "POST",
       body: JSON.stringify(credentials),
     });
   }
 
   /* User Account Registration */
   async register(userData) {
-    return this.request('/auth/register', {
-      method: 'POST',
+    return this.request("/auth/register", {
+      method: "POST",
       body: JSON.stringify(userData),
     });
   }
 
   /* OTP Verification for Two-Factor Authentication */
   async verifyOTP(email, otp) {
-    return this.request('/auth/verify-otp', {
-      method: 'POST',
+    return this.request("/auth/verify-otp", {
+      method: "POST",
       body: JSON.stringify({ email, otp }),
     });
   }
 
   /* OTP Code Resend */
   async resendOTP(email) {
-    return this.request('/auth/resend-otp', {
-      method: 'POST',
+    return this.request("/auth/resend-otp", {
+      method: "POST",
       body: JSON.stringify({ email }),
     });
   }
 
   /* User Session Logout */
   async logout() {
-    return this.request('/auth/logout', {
-      method: 'POST',
+    return this.request("/auth/logout", {
+      method: "POST",
     });
   }
 
   /* Password Reset Request */
   async requestPasswordReset(email) {
-    return this.request('/auth/request-reset', {
-      method: 'POST',
+    return this.request("/auth/request-reset", {
+      method: "POST",
       body: JSON.stringify({ email }),
     });
   }
 
   /* Password Reset Completion */
   async resetPassword(email, token, password) {
-    return this.request('/auth/reset-password', {
-      method: 'POST',
+    return this.request("/auth/reset-password", {
+      method: "POST",
       body: JSON.stringify({ email, token, password }),
     });
   }
 
   /* Authenticated Password Change */
   async changePassword(passwordData) {
-    return this.request('/auth/change-password', {
-      method: 'POST',
+    return this.request("/auth/change-password", {
+      method: "POST",
       body: JSON.stringify(passwordData),
     });
   }
@@ -102,13 +102,13 @@ class ApiClient {
 
   /* Get User Profile Information */
   async getProfile() {
-    return this.request('/api/profile');
+    return this.request("/api/profile");
   }
 
   /* Update User Profile */
   async updateProfile(profileData) {
-    return this.request('/api/profile', {
-      method: 'PUT',
+    return this.request("/api/profile", {
+      method: "PUT",
       body: JSON.stringify(profileData),
     });
   }
@@ -122,7 +122,7 @@ class ApiClient {
 
   /* Check Authentication Status */
   async checkAuthStatus() {
-    return this.request('/dashboard');
+    return this.request("/dashboard");
   }
 
   /* Get Dashboard Jobs */
@@ -132,7 +132,7 @@ class ApiClient {
 
   /* Get Dashboard Statistics */
   async getDashboardStats() {
-    return this.request('/api/dashboard/statistics');
+    return this.request("/api/dashboard/statistics");
   }
 
   /* Get Job Details */
@@ -157,17 +157,19 @@ class ApiClient {
 
   /* Prepare Modelling Parameters */
   async prepareModelling(data) {
-    return this.request('/api/demo/modelling/prepare', {
-      method: 'POST',
+    return this.request("/api/demo/modelling/prepare", {
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
 
   /* Submit Modelling Job */
   async submitModelling(data, isDemo = false) {
-    const endpoint = isDemo ? '/api/demo/modelling/submit' : '/api/modelling/submit';
+    const endpoint = isDemo
+      ? "/api/demo/modelling/submit"
+      : "/api/modelling/submit";
     return this.request(endpoint, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   }
@@ -184,29 +186,29 @@ class ApiClient {
 
   /* Download Job Results */
   async downloadJobResults(jobId, isDemo = false) {
-    const endpoint = isDemo ? 
-      `/api/demo/job/${jobId}/download` : 
-      `/api/modelling/job/${jobId}/download`;
-    
+    const endpoint = isDemo
+      ? `/api/demo/job/${jobId}/download`
+      : `/api/modelling/job/${jobId}/download`;
+
     const url = `${this.baseURL}${endpoint}`;
-    return fetch(url, { credentials: 'include' });
+    return fetch(url, { credentials: "include" });
   }
 
   /* Cancel Running Job */
   async cancelJob(jobId) {
     return this.request(`/api/modelling/job/${jobId}/cancel`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   }
 
   /* Get Modelling System Status */
   async getModellingSystemStatus() {
-    return this.request('/api/modelling/status');
+    return this.request("/api/modelling/status");
   }
 
   /* Get System Health */
   async getSystemHealth() {
-    return this.request('/api/health');
+    return this.request("/api/health");
   }
 }
 
@@ -224,7 +226,8 @@ export const authAPI = {
   resendOTP: (email) => apiClient.resendOTP(email),
   logout: () => apiClient.logout(),
   requestPasswordReset: (email) => apiClient.requestPasswordReset(email),
-  resetPassword: (email, token, password) => apiClient.resetPassword(email, token, password),
+  resetPassword: (email, token, password) =>
+    apiClient.resetPassword(email, token, password),
   changePassword: (data) => apiClient.changePassword(data),
 };
 
@@ -244,7 +247,8 @@ export const modellingAPI = {
   submitModelling: (data, isDemo) => apiClient.submitModelling(data, isDemo),
   getJobStatus: (jobId) => apiClient.getJobStatus(jobId),
   getJobWithResults: (jobId) => apiClient.getJobWithResults(jobId),
-  downloadJobResults: (jobId, isDemo) => apiClient.downloadJobResults(jobId, isDemo),
+  downloadJobResults: (jobId, isDemo) =>
+    apiClient.downloadJobResults(jobId, isDemo),
   cancelJob: (jobId) => apiClient.cancelJob(jobId),
   getSystemStatus: () => apiClient.getModellingSystemStatus(),
 };

@@ -1,6 +1,6 @@
 // user.js - User Management API Module
 
-import { userAPI, authAPI } from './apiClient';
+import { userAPI, authAPI } from "./apiClient";
 
 /* User Profile Management Functions */
 

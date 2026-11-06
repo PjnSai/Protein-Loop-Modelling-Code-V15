@@ -1,6 +1,6 @@
 // ViewerLegend.jsx - Protein Viewer Legend and Status Component
 
-import { FaRuler } from 'react-icons/fa';
+import { FaRuler } from "react-icons/fa";
 
 const ViewerLegend = ({
   showControls,
@@ -11,7 +11,7 @@ const ViewerLegend = ({
   viewerType,
   representation,
   viewerReady,
-  isExpanded 
+  isExpanded,
 }) => {
   if (!showControls) {
     return null;
@@ -30,12 +30,17 @@ const ViewerLegend = ({
                 </span>
               )}
               {segmentStart && segmentEnd && (
-                <span className={`badge ${isModelledStructure ? 'bg-danger' : 'bg-warning'} me-2`}>
-                  {isModelledStructure ? 'Modelled ' : 'Target '}Segment ({segmentStart}-{segmentEnd})
+                <span
+                  className={`badge ${isModelledStructure ? "bg-danger" : "bg-warning"} me-2`}
+                >
+                  {isModelledStructure ? "Modelled " : "Target "}Segment (
+                  {segmentStart}-{segmentEnd})
                 </span>
               )}
               {isModelledStructure && (
-                <span className="badge bg-success me-2">Modelled Structure</span>
+                <span className="badge bg-success me-2">
+                  Modelled Structure
+                </span>
               )}
               {isExpanded && (
                 <span className="badge bg-info">Expanded View</span>

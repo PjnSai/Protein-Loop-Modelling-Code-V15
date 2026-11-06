@@ -1,16 +1,16 @@
 /* ProtectedRoute.jsx - Route Protection Component */
 
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
-import { LoadingSpinner } from './ui';
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { LoadingSpinner } from "./ui";
 
 /* ProtectedRoute Component */
-const ProtectedRoute = ({ 
-  children, 
-  redirectTo = '/login',
+const ProtectedRoute = ({
+  children,
+  redirectTo = "/login",
   showLoadingSpinner = true,
-  requiredPermission = null 
+  requiredPermission = null,
 }) => {
   const { isAuthenticated, isLoading, hasPermission } = useAuth();
   const location = useLocation();
@@ -18,22 +18,13 @@ const ProtectedRoute = ({
   /* Loading State Display */
   if (isLoading) {
     return showLoadingSpinner ? (
-      <LoadingSpinner 
-        text="Checking authentication..." 
-        fullPage 
-      />
+      <LoadingSpinner text="Checking authentication..." fullPage />
     ) : null;
   }
 
   /* Authentication Redirection */
   if (!isAuthenticated) {
-    return (
-      <Navigate 
-        to={redirectTo} 
-        state={{ from: location }} 
-        replace 
-      />
-    );
+    return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
 
   /* Permission Validation */

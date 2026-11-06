@@ -1,15 +1,15 @@
 /* RegisterForm.jsx - User Registration Form Component */
 
-import React, { useState } from 'react';
-import InputField from '../ui/InputField';
+import React, { useState } from "react";
+import InputField from "../ui/InputField";
 
 /* RegisterForm Component */
 export default function RegisterForm({ onSubmit, isLoading, error }) {
   // Registration Form State Management
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: ''
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   /* Input Change Handler */
@@ -25,7 +25,6 @@ export default function RegisterForm({ onSubmit, isLoading, error }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      
       {/* Email Address Input */}
       <InputField
         label="Email Address"
@@ -36,7 +35,7 @@ export default function RegisterForm({ onSubmit, isLoading, error }) {
         disabled={isLoading}
         placeholder="Enter your email"
       />
-      
+
       {/* Password Input */}
       <InputField
         label="Password"
@@ -47,12 +46,13 @@ export default function RegisterForm({ onSubmit, isLoading, error }) {
         disabled={isLoading}
         placeholder="Create a strong password"
       />
-      
+
       {/* Password Requirements Guidance */}
       <div className="form-text mb-2">
-        Password must be at least 8 characters and should not be found in data breaches.
+        Password must be at least 8 characters and should not be found in data
+        breaches.
       </div>
-      
+
       {/* Password Confirmation Input */}
       <InputField
         label="Confirm Password"
@@ -84,11 +84,10 @@ export default function RegisterForm({ onSubmit, isLoading, error }) {
               Creating Account...
             </>
           ) : (
-            'Create Account'
+            "Create Account"
           )}
         </button>
       </div>
-      
     </form>
   );
 }

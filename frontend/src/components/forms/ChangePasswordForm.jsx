@@ -1,7 +1,7 @@
 /* ChangePasswordForm.jsx - Secure Password Change Form Component */
 
-import React from 'react';
-import InputField from '../ui/InputField';
+import React from "react";
+import InputField from "../ui/InputField";
 
 /* ChangePasswordForm Component */
 const ChangePasswordForm = ({
@@ -9,10 +9,9 @@ const ChangePasswordForm = ({
   onChange,
   onSubmit,
   isSaving,
-  onCancel
+  onCancel,
 }) => (
   <form onSubmit={onSubmit} className="border rounded p-3">
-    
     {/* Current Password Field */}
     <InputField
       label="Current Password"
@@ -22,7 +21,7 @@ const ChangePasswordForm = ({
       onChange={onChange}
       disabled={isSaving}
     />
-    
+
     {/* New Password Field */}
     <InputField
       label="New Password"
@@ -32,7 +31,7 @@ const ChangePasswordForm = ({
       onChange={onChange}
       disabled={isSaving}
     />
-    
+
     {/* Password Confirmation Field */}
     <InputField
       label="Confirm New Password"
@@ -42,17 +41,20 @@ const ChangePasswordForm = ({
       onChange={onChange}
       disabled={isSaving}
     />
-    
+
     {/* Action Buttons */}
     <div className="d-flex gap-2">
       <button type="submit" className="btn btn-primary" disabled={isSaving}>
-        {isSaving ? 'Updating...' : 'Update Password'}
+        {isSaving ? "Updating..." : "Update Password"}
       </button>
-      <button type="button" className="btn btn-outline-secondary" onClick={onCancel}>
+      <button
+        type="button"
+        className="btn btn-outline-secondary"
+        onClick={onCancel}
+      >
         Cancel
       </button>
     </div>
-    
   </form>
 );
 

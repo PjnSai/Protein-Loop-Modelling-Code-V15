@@ -1,6 +1,6 @@
 /* auth.js - Authentication API Module */
 
-import { authAPI } from './apiClient';
+import { authAPI } from "./apiClient";
 
 /* Authentication Function Exports */
 
@@ -19,18 +19,22 @@ export const resendOTP = authAPI.resendOTP;
 export const requestPasswordReset = authAPI.requestPasswordReset;
 
 // Password Reset Completion
- export const resetPassword = authAPI.resetPassword;
+export const resetPassword = authAPI.resetPassword;
 
 // User Registration Function with Parameter Adaptation
-export const register = (email, password) => authAPI.register({ email, password });
+export const register = (email, password) =>
+  authAPI.register({ email, password });
 
 /* Dynamic Import Functions for User Management */
 
 /* User Profile Information Retrieval (Dynamic Import) */
-export const getProfile = () => import('./apiClient').then(({ userAPI }) => userAPI.getProfile());
+export const getProfile = () =>
+  import("./apiClient").then(({ userAPI }) => userAPI.getProfile());
 
 /* User Profile Information Update (Dynamic Import) */
-export const updateProfile = (data) => import('./apiClient').then(({ userAPI }) => userAPI.updateProfile(data));
+export const updateProfile = (data) =>
+  import("./apiClient").then(({ userAPI }) => userAPI.updateProfile(data));
 
 /* Authenticated Password Change (Dynamic Import) */
-export const changePassword = (data) => import('./apiClient').then(({ authAPI }) => authAPI.changePassword(data));
+export const changePassword = (data) =>
+  import("./apiClient").then(({ authAPI }) => authAPI.changePassword(data));

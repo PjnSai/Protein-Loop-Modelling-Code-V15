@@ -1,27 +1,26 @@
 /* LoginForm.jsx - User Authentication Form Component */
 
-import React, { useState } from 'react';
-import InputField from '../ui/InputField';
+import React, { useState } from "react";
+import InputField from "../ui/InputField";
 
 /* LoginForm Component */
 const LoginForm = ({ onSubmit, isLoading, error }) => {
   // Form State Management
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   /* Input Change Handler */
-  const handleChange = e => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   /* Form Submission Handler */
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      
       {/* Email Address Input Field */}
       <InputField
         label="Email Address"
@@ -32,7 +31,7 @@ const LoginForm = ({ onSubmit, isLoading, error }) => {
         disabled={isLoading}
         placeholder="Enter your email"
       />
-      
+
       {/* Password Input Field */}
       <InputField
         label="Password"
@@ -43,14 +42,14 @@ const LoginForm = ({ onSubmit, isLoading, error }) => {
         disabled={isLoading}
         placeholder="Enter your password"
       />
-      
+
       {/* Error Message Display */}
       {error && (
         <div className="alert alert-danger alert-dismissible" role="alert">
           <strong>Error:</strong> {error}
         </div>
       )}
-      
+
       {/* Submit Button with Loading State */}
       <div className="d-grid">
         <button
@@ -64,11 +63,10 @@ const LoginForm = ({ onSubmit, isLoading, error }) => {
               Signing In...
             </>
           ) : (
-            'Sign In'
+            "Sign In"
           )}
         </button>
       </div>
-      
     </form>
   );
 };

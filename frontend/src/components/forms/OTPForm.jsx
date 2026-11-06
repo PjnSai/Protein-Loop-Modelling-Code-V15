@@ -1,20 +1,25 @@
 /* OTPForm.jsx - Two-Factor Authentication Form Component */
 
-import React from 'react';
+import React from "react";
 
 /* OTPForm Component */
-export default function OTPForm({ otp, onChange, onSubmit, isLoading, timeLeft, error }) {
-  
+export default function OTPForm({
+  otp,
+  onChange,
+  onSubmit,
+  isLoading,
+  timeLeft,
+  error,
+}) {
   /* Time Formatting Utility */
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
     <form onSubmit={onSubmit}>
-      
       {/* OTP Code Input Section */}
       <div className="mb-4">
         <label htmlFor="otp" className="form-label text-center d-block">
@@ -29,18 +34,20 @@ export default function OTPForm({ otp, onChange, onSubmit, isLoading, timeLeft, 
           placeholder="000000"
           maxLength="6"
           style={{
-            fontSize: '1.5rem',
-            letterSpacing: '0.5rem',
-            fontFamily: 'monospace',
+            fontSize: "1.5rem",
+            letterSpacing: "0.5rem",
+            fontFamily: "monospace",
           }}
           disabled={isLoading || timeLeft === 0}
           autoComplete="one-time-code"
         />
-        
+
         {/* Expiration Timer Display */}
         <div className="form-text text-center">
           {timeLeft > 0 ? (
-            <>Code expires in: <strong>{formatTime(timeLeft)}</strong></>
+            <>
+              Code expires in: <strong>{formatTime(timeLeft)}</strong>
+            </>
           ) : (
             <span className="text-danger">Code has expired</span>
           )}
@@ -67,11 +74,10 @@ export default function OTPForm({ otp, onChange, onSubmit, isLoading, timeLeft, 
               Verifying...
             </>
           ) : (
-            'Verify & Sign In'
+            "Verify & Sign In"
           )}
         </button>
       </div>
-      
     </form>
   );
 }

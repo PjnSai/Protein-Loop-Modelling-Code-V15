@@ -1,13 +1,12 @@
 // RequestResetForm.jsx - Password Reset Request Form Component
 
-import React from 'react';
-import InputField from '../ui/InputField';
+import React from "react";
+import InputField from "../ui/InputField";
 
 // RequestResetForm Component
 
 const RequestResetForm = ({ email, onChange, onSubmit, isLoading, error }) => (
   <form onSubmit={onSubmit} role="form">
-    
     {/* Email Address Input for Reset Request */}
     <InputField
       label="Email Address"
@@ -39,11 +38,10 @@ const RequestResetForm = ({ email, onChange, onSubmit, isLoading, error }) => (
             Sending...
           </>
         ) : (
-          'Request Reset Link'
+          "Request Reset Link"
         )}
       </button>
     </div>
-    
   </form>
 );
 

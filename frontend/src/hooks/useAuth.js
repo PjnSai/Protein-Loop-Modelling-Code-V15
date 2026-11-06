@@ -1,20 +1,27 @@
 /* useAuth.js - Authentication Management Hook */
 
-import { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import apiClient from '../api/apiClient';
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import apiClient from "../api/apiClient";
 
 /* useAuth Hook */
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  
+
   // Validate context availability and provide clear error messaging
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
 
   // Extract authentication state and functions from context
-  const { user, isAuthenticated, isLoading, refreshUser, logout, setAuthenticatedUser } = context;
+  const {
+    user,
+    isAuthenticated,
+    isLoading,
+    refreshUser,
+    logout,
+    setAuthenticatedUser,
+  } = context;
 
   /* Login Function with Context Integration */
   const login = async (credentials) => {
@@ -24,10 +31,10 @@ export const useAuth = () => {
         // Don't set authenticated state yet - wait for OTP verification
         return { success: true, data };
       } else {
-        return { success: false, error: data.error || 'Login failed' };
+        return { success: false, error: data.error || "Login failed" };
       }
     } catch (error) {
-      return { success: false, error: 'Network error. Please try again.' };
+      return { success: false, error: "Network error. Please try again." };
     }
   };
 
@@ -42,10 +49,10 @@ export const useAuth = () => {
         await refreshUser();
         return { success: true, data };
       } else {
-        return { success: false, error: data.error || 'Invalid OTP' };
+        return { success: false, error: data.error || "Invalid OTP" };
       }
     } catch (error) {
-      return { success: false, error: 'Network error. Please try again.' };
+      return { success: false, error: "Network error. Please try again." };
     }
   };
 
@@ -84,24 +91,24 @@ export const useAuth = () => {
 
   return {
     // Authentication State
-    user,                    // Current user information object
-    isAuthenticated,         // Boolean authentication status
-    isLoading,              // Loading state during auth operations
-    
+    user, // Current user information object
+    isAuthenticated, // Boolean authentication status
+    isLoading, // Loading state during auth operations
+
     // Authentication Actions
-    login,                  // Login function with credential validation
-    verifyOTP,              // OTP verification with context updates
-    logout: logoutUser,     // Logout function with cleanup
-    refreshUser,            // Refresh user data from backend
-    checkAuthStatus,        // Verify current authentication status
-    
+    login, // Login function with credential validation
+    verifyOTP, // OTP verification with context updates
+    logout: logoutUser, // Logout function with cleanup
+    refreshUser, // Refresh user data from backend
+    checkAuthStatus, // Verify current authentication status
+
     // Helper Functions
-    hasPermission,          // Permission checking for access control
-    
+    hasPermission, // Permission checking for access control
+
     // User Information Helpers
     userEmail: user?.email, // Quick access to user email
-    userId: user?.id,       // Quick access to user ID
-    isGuest: !isAuthenticated // Quick guest status check
+    userId: user?.id, // Quick access to user ID
+    isGuest: !isAuthenticated, // Quick guest status check
   };
 };
 

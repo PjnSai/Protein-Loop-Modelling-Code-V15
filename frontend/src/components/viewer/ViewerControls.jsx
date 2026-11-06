@@ -1,7 +1,6 @@
 // ViewerControls.jsx - Protein Viewer Control Interface Component
- 
 
-import { FaCrosshairs, FaRedo, FaExpand, FaCompress } from 'react-icons/fa';
+import { FaCrosshairs, FaRedo, FaExpand, FaCompress } from "react-icons/fa";
 
 // ViewerControls Component
 const ViewerControls = ({
@@ -10,25 +9,25 @@ const ViewerControls = ({
   representation,
   isLoading,
   viewerReady,
-  
+
   // Display info
   selectedChain,
   segmentStart,
   segmentEnd,
   isModelledStructure,
-  
+
   // Viewer expansion state
   isExpanded,
-  
+
   // Actions
   onSwitchViewer,
   onChangeRepresentation,
   onCenterView,
   onResetViewer,
   onToggleExpanded,
-  
+
   // Control visibility
-  showControls
+  showControls,
 }) => {
   // Early return when controls are hidden
   if (!showControls) {
@@ -36,21 +35,19 @@ const ViewerControls = ({
   }
 
   // Available representation styles for analysis
-  const availableStyles = ['cartoon', 'line', 'stick', 'sphere'];
+  const availableStyles = ["cartoon", "line", "stick", "sphere"];
 
   return (
     <div className="card-header bg-light">
       <div className="row align-items-center">
-        
         {/* Primary Control Section */}
         <div className="col-md-7">
-          
           {/* Viewer Engine Selection */}
           <div className="btn-group btn-group-sm me-3" role="group">
             <button
               type="button"
-              className={`btn ${viewerType === 'ngl' ? 'btn-primary' : 'btn-outline-primary'}`}
-              onClick={() => onSwitchViewer('ngl')}
+              className={`btn ${viewerType === "ngl" ? "btn-primary" : "btn-outline-primary"}`}
+              onClick={() => onSwitchViewer("ngl")}
               disabled={isLoading}
               title="NGL Viewer - Advanced molecular graphics"
             >
@@ -58,8 +55,8 @@ const ViewerControls = ({
             </button>
             <button
               type="button"
-              className={`btn ${viewerType === '3dmol' ? 'btn-primary' : 'btn-outline-primary'}`}
-              onClick={() => onSwitchViewer('3dmol')}
+              className={`btn ${viewerType === "3dmol" ? "btn-primary" : "btn-outline-primary"}`}
+              onClick={() => onSwitchViewer("3dmol")}
               disabled={isLoading}
               title="3DMol Viewer - Fast rendering"
             >
@@ -73,7 +70,7 @@ const ViewerControls = ({
               <button
                 key={style}
                 type="button"
-                className={`btn ${representation === style ? 'btn-secondary' : 'btn-outline-secondary'}`}
+                className={`btn ${representation === style ? "btn-secondary" : "btn-outline-secondary"}`}
                 onClick={() => onChangeRepresentation(style)}
                 disabled={isLoading || !viewerReady}
                 title={`Show ${style} representation`}
@@ -86,13 +83,14 @@ const ViewerControls = ({
 
         {/* Secondary Control Section */}
         <div className="col-md-5 text-end">
-          
           {/* Viewer Expansion Toggle */}
           <button
-            className={`btn btn-sm me-2 ${isExpanded ? 'btn-warning' : 'btn-outline-warning'}`}
+            className={`btn btn-sm me-2 ${isExpanded ? "btn-warning" : "btn-outline-warning"}`}
             onClick={onToggleExpanded}
             disabled={isLoading}
-            title={isExpanded ? "Collapse to normal size" : "Expand for larger view"}
+            title={
+              isExpanded ? "Collapse to normal size" : "Expand for larger view"
+            }
           >
             {isExpanded ? (
               <>
@@ -117,7 +115,7 @@ const ViewerControls = ({
             <FaCrosshairs className="me-1" />
             Center
           </button>
-          
+
           {/* Viewer Reset Control */}
           <button
             className="btn btn-outline-secondary btn-sm"
@@ -130,19 +128,25 @@ const ViewerControls = ({
           </button>
         </div>
       </div>
-      
+
       {/* Status Information Display */}
       <div className="mt-2">
         <small className="text-muted">
-          Status: 
+          Status:
           {isLoading && <span className="text-warning ms-1">Loading...</span>}
-          {!isLoading && viewerReady && <span className="text-success ms-1">Ready</span>}
-          {!isLoading && !viewerReady && <span className="text-danger ms-1">Error</span>}
+          {!isLoading && viewerReady && (
+            <span className="text-success ms-1">Ready</span>
+          )}
+          {!isLoading && !viewerReady && (
+            <span className="text-danger ms-1">Error</span>
+          )}
           {viewerReady && (
             <span className="ms-2">
               {viewerType.toUpperCase()} • {representation}
               {selectedChain && ` • Chain ${selectedChain}`}
-              {segmentStart && segmentEnd && ` • Segment ${segmentStart}-${segmentEnd}`}
+              {segmentStart &&
+                segmentEnd &&
+                ` • Segment ${segmentStart}-${segmentEnd}`}
               {isModelledStructure && ` • Modelled Structure`}
               {isExpanded && ` • Expanded View`}
             </span>
