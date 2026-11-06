@@ -13,6 +13,3 @@ export { default as EmptyState } from "./EmptyState";
 
 // Status Display Components
 export { default as StatusBadge } from "./StatusBadge";
-
-// Interactive Dialog Components
-export { default as ConfirmDialog } from "./ConfirmDialog";
