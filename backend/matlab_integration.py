@@ -457,5 +457,5 @@ def create_matlab_modeller(matlab_code_dir="matlab_code", results_dir="modelling
         logger.info("MATLAB Engine for Python is available")
         return MATLABLoopModeller(matlab_code_dir=matlab_code_dir, results_dir=results_dir)
     except ImportError:
-        logger.error("MATLAB Engine for Python not installed")
+        logger.warning("MATLAB Engine for Python not installed")
         raise ImportError("MATLAB Engine for Python is required but not installed")
