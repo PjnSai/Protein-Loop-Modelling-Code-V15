@@ -1,7 +1,7 @@
 # auth_routes.py - Authentication and Session Management
 from flask import request, jsonify, session
 import time, secrets, string
-from utils import send_email, log_event, is_pwned, check_password_strength, is_locked
+from utils import send_email, log_event, is_pwned, check_password_strength, is_locked, MAX_FAILED_ATTEMPTS
 from models import db, User
 from logging_config import logger
 from modelling_utils import create_error_response
@@ -98,7 +98,13 @@ def verify_otp():
         
         user = User.query.filter_by(email=data['email']).first()
 
-        if user and user.otp_code == data['otp']:
+        # Block verification while the account is locked
+        if user and is_locked(user):
+            log_event(data['email'], 'otp-verify', 'locked', request.remote_addr)
+            return create_error_response('Account temporarily locked. Try again later.', 403)
+
+        # compare_digest takes the same time whether or not the codes match
+        if user and user.otp_code and secrets.compare_digest(user.otp_code, str(data['otp'])):
             # Check OTP hasn't expired (5 minute time limit)
             if time.time() - user.otp_sent_time < 300:
                 # Create secure session
@@ -108,9 +114,10 @@ def verify_otp():
                 session['login_time'] = time.time()
                 session.modified = True  # Force session save
                 
-                # Clear OTP after successful verification
+                # Clear OTP and failed attempts after successful verification
                 user.otp_code = None
                 user.otp_sent_time = None
+                user.failed_attempts = 0
                 db.session.commit()
                 
                 log_event(user.email, 'otp-verify', 'success', request.remote_addr)
@@ -126,6 +133,15 @@ def verify_otp():
                 log_event(data['email'], 'otp-verify', 'expired', request.remote_addr)
                 return create_error_response('OTP has expired. Please login again.', 401)
         
+        # Count a wrong OTP as a failed attempt; cancel the OTP once the limit is reached
+        if user and user.otp_code:
+            user.failed_attempts += 1
+            user.last_failed = time.time()
+            if user.failed_attempts >= MAX_FAILED_ATTEMPTS:
+                user.otp_code = None
+                user.otp_sent_time = None
+            db.session.commit()
+
         log_event(data['email'], 'otp-verify', 'failed', request.remote_addr)
         return create_error_response('Invalid OTP', 401)
         
