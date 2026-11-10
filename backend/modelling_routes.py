@@ -7,7 +7,7 @@ from utils import log_event, require_auth
 from models import User, ModellingJob
 from extensions import db
 from logging_config import logger
-from modelling_utils import clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
+from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
 
 
 
@@ -23,6 +23,10 @@ def fetch_pdb_structure(pdb_code):
     """Fetch PDB structure from RCSB database with analysis"""
     try:
         user = User.query.get(session.get('user_id'))
+
+        validation_error = validate_pdb_code(pdb_code)
+        if validation_error:
+            return create_error_response(validation_error)
         
         # Fetch PDB with structural analysis
         pdb_content, analysis, error = fetch_pdb_with_analysis(pdb_code)
@@ -52,6 +56,11 @@ def submit_modelling_job():
             return create_error_response('User not found', 404)
         
         data = request.get_json()
+
+        # Validate parameters before using them
+        param_error = validate_basic_params(data) or validate_pdb_code(str(data['pdb_code']))
+        if param_error:
+            return create_error_response(param_error)
         
         # Check MATLAB system availability
         matlab_error = check_matlab_system()

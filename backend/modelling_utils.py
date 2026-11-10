@@ -20,8 +20,19 @@ def validate_basic_params(data):
     if missing:
         return f'Missing required parameters: {", ".join(missing)}'
     
-    # Validate segment range makes sense
-    if data['segment_start'] >= data['segment_end']:
+    # Chain must be a single letter or digit (matches the database column)
+    chain = data['chain']
+    if not isinstance(chain, str) or len(chain) != 1 or not chain.isalnum():
+        return 'Chain must be a single letter or digit'
+
+    # Segment values must be whole numbers in the right order
+    try:
+        segment_start = int(data['segment_start'])
+        segment_end = int(data['segment_end'])
+    except (TypeError, ValueError):
+        return 'segment_start and segment_end must be whole numbers'
+
+    if segment_start >= segment_end:
         return 'segment_start must be less than segment_end'
     
     return None
