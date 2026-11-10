@@ -81,14 +81,18 @@ def clean_angle_parameters(params):
 
 def clean_parameters(data, demo_mode=False):
     """Clean and standardise parameters for both demo and auth"""
+    # Iteration limits match the frontend: 1,000-5,000 for demo, 1,000-50,000 when logged in
+    max_iterations = 5000 if demo_mode else 50000
+    n_iterations = int(data.get('n_iterations', 5000 if demo_mode else 10000))
+
     params = {
         'pdb_code': str(data['pdb_code']).upper(),  # Standardise to uppercase
         'chain': str(data['chain']).upper(),        # Standardise to uppercase
         'segment_start': int(data['segment_start']),
         'segment_end': int(data['segment_end']),
         
-        # Iteration count: fewer for demo to reduce processing time
-        'n_iterations': int(data.get('n_iterations', 5000 if demo_mode else 10000)),
+        # Iteration count, clamped to the allowed range
+        'n_iterations': max(1000, min(n_iterations, max_iterations)),
         
         # Angle targets and constraints (empty lists if not provided)
         'target_phi': data.get('target_phi', []),
