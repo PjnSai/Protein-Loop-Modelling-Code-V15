@@ -1,6 +1,6 @@
 # context.py - Application Context and Shared Resources
 import os
-from demo_utils import DemoJobManager
+from demo_utils import demo_job_manager
 from matlab_integration import create_matlab_modeller
 import requests
 from pathlib import Path
@@ -107,8 +107,6 @@ PDB_CACHE_DIR = 'pdb_cache'
 RESULTS_DIR = 'modelling_results'
 MATLAB_CODE_DIR = 'matlab_code'
 UPLOAD_FOLDER = 'uploads'
-DEMO_JOBS_DIR = 'demo_jobs'
-TEMP_FILES_DIR = 'temp_files'
 
 # Create required directories
 for directory in [PDB_CACHE_DIR, RESULTS_DIR, MATLAB_CODE_DIR, UPLOAD_FOLDER]:
@@ -117,7 +115,6 @@ for directory in [PDB_CACHE_DIR, RESULTS_DIR, MATLAB_CODE_DIR, UPLOAD_FOLDER]:
 
 # Create shared instances used throughout the application
 pdb_manager = PDBManager(PDB_CACHE_DIR)
-demo_job_manager = DemoJobManager()
 
 # MATLAB integration setup
 try:

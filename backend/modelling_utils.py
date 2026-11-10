@@ -143,17 +143,8 @@ def run_matlab_modelling(job_id, pdb_content, params):
         )
         
         if result['success']:
-            # Process successful results
+            # matlab_integration has already extracted the final model from the trajectory
             modelled_structure = result['results'].get('modelled_pdb_content', '')
-            
-            if modelled_structure:
-                try:
-                    # Extract final optimised model from MATLAB trajectory
-                    from matlab_integration import extract_final_model_from_pdb
-                    modelled_structure = extract_final_model_from_pdb(modelled_structure)
-                    logger.info(f"Final model extracted for job {job_id}")
-                except Exception as e:
-                    logger.warning(f"Using full trajectory for job {job_id}: {e}")
             
             return {
                 'success': True,

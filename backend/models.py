@@ -1,5 +1,5 @@
 # models.py - SQLAlchemy Database Models for Protein Loop Modelling System
-from datetime import timedelta, datetime
+from datetime import datetime
 from extensions import db, bcrypt
 
 class User(db.Model):

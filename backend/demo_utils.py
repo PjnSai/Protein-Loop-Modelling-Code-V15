@@ -1,10 +1,7 @@
 # demo_utils.py - Demo Job Management Utilities
-import os, uuid
+import uuid
 from datetime import datetime, timedelta
 from logging_config import logger
-
-DEMO_JOB_DIR = "demo_jobs"
-os.makedirs(DEMO_JOB_DIR, exist_ok=True)
 
 class DemoJobManager:
     """Manage demo jobs without database persistence for Temporary Modelling Jobs"""

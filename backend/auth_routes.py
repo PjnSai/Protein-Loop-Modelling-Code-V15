@@ -6,10 +6,6 @@ from models import db, User
 from logging_config import logger
 from modelling_utils import create_error_response
 
-def session_check():
-    """Debug route to check session status"""
-    return jsonify({'session_id': session.get('user_id'), 'session_keys': list(session.keys()), 'is_permanent': session.permanent, 'cookies': dict(request.cookies)})
-
 def register():
     """User registration endpoint"""
     try:

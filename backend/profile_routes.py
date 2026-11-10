@@ -211,8 +211,7 @@ def delete_user_logs():
             cutoff_time = time.time() - (int(days_old) * 24 * 60 * 60)
             query = query.filter(LoginLog.timestamp < cutoff_time)
         
-        # Count logs before deletion for reporting
-        count_to_delete = query.count()
+
         
         # Perform bulk deletion
         deleted_count = query.delete()

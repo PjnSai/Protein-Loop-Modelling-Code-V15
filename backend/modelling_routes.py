@@ -9,45 +9,7 @@ from extensions import db
 from logging_config import logger
 from modelling_utils import clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
 
-def format_job_data(job, include_structure=False):
-    """Format job data for API responses"""
-    data = {
-        'job_id': job.job_id,
-        'status': job.status,
-        'created_at': job.created_at.isoformat(),
-        'pdb_code': job.pdb_code,
-        'chain': job.chain,
-        'segment_start': job.segment_start,
-        'segment_end': job.segment_end,
-        'parameters': json.loads(job.parameters) if job.parameters else {}
-    }
-    
-    # Add optional timestamp and fields if they exist
-    if job.started_at:
-        data['started_at'] = job.started_at.isoformat()
-    if job.completed_at:
-        data['completed_at'] = job.completed_at.isoformat()
-    if job.processing_time:
-        data['processing_time'] = job.processing_time
-    if job.error_message:
-        data['error_message'] = job.error_message
-    if job.results_data:
-        data['results'] = json.loads(job.results_data)
-    
-    # Add structure data if requested (for visualisation)
-    if include_structure:
-        data['original_structure'] = job.pdb_content
-        data['has_modelled_structure'] = False
-        
-        if job.result_file_path and Path(job.result_file_path).exists():
-            try:
-                with open(job.result_file_path, 'r') as f:
-                    data['modelled_structure'] = f.read()
-                data['has_modelled_structure'] = True
-            except Exception as e:
-                logger.warning(f"Could not read structure for job {job.job_id}: {e}")
-    
-    return data
+
 
 def get_user_job(job_id, user_id):
     """Get job for user with authorisation validation"""
@@ -248,46 +210,3 @@ def delete_job(job_id):
         logger.error(f"Delete job error: {e}")
         db.session.rollback()
         return create_error_response('Failed to delete job', 500)
-
-@require_auth
-def modelling_system_status():
-    """Get status of MATLAB modelling system"""
-    try:
-        user = User.query.get(session.get('user_id'))
-        
-        matlab_error = check_matlab_system()
-        system_ready = matlab_error is None
-        
-        status_data = {
-            'matlab_available': system_ready,
-            'system_ready': system_ready,
-            'user_id': user.id,
-            'user_email': user.email,
-            'deployment_mode': 'immediate_processing'
-        }
-        
-        if system_ready:
-            status_data['message'] = 'System ready for loop modelling'
-        else:
-            status_data['message'] = matlab_error
-            status_data['matlab_error'] = matlab_error
-        
-        return jsonify(status_data)
-        
-    except Exception as e:
-        logger.error(f"System status error: {e}")
-        return create_error_response('Failed to get system status', 500)
-    
-@require_auth
-def get_job_with_results(job_id):
-    """Get job details with modelled structure for visualisation"""
-    try:
-        job, error = get_user_job(job_id, session.get('user_id'))
-        if error:
-            return error
-        
-        return jsonify(format_job_data(job, include_structure=True))
-        
-    except Exception as e:
-        logger.error(f"Get job with results error: {e}")
-        return create_error_response('Failed to get job details', 500)

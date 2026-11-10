@@ -17,10 +17,12 @@ def extract_final_model_from_pdb(pdb_content: str) -> str:
     header_lines = []
     footer_lines = []
     in_model = False
+    seen_model = False
     
     # Parse PDB content to separate models
     for line in lines:
         if line.startswith('MODEL'):
+            seen_model = True
             # Extract model number
             try:
                 model_parts = line.split()
@@ -44,11 +46,9 @@ def extract_final_model_from_pdb(pdb_content: str) -> str:
             if in_model and current_model is not None:
                 # Add to current model
                 models[current_model].append(line)
-            elif not in_model and len(models) == 0:
+            elif not seen_model:
                 # Single model PDB (no MODEL/ENDMDL blocks)
-                if 1 not in models:
-                    models[1] = []
-                models[1].append(line)
+                models.setdefault(1, []).append(line)
                 
         elif line.startswith(('HEADER', 'TITLE', 'REMARK', 'CRYST1', 'ORIGX', 'SCALE')):
             # Keep header information
@@ -135,14 +135,13 @@ def validate_extracted_model(pdb_content: str) -> dict:
 
 class MATLABLoopModeller:
     """MATLAB Engine Interface for Protein Loop Modelling"""
-    def __init__(self, matlab_code_dir="matlab_code", results_dir="modelling_results", temp_dir="temp_files"):
+    def __init__(self, matlab_code_dir="matlab_code", results_dir="modelling_results"):
         self.matlab_code_dir = Path(matlab_code_dir)
         self.results_dir = Path(results_dir)
-        self.temp_dir = Path(temp_dir)
         self.matlab_engine = None
 
         # Ensure directories exist
-        for directory in [self.matlab_code_dir, self.results_dir, self.temp_dir]:
+        for directory in [self.matlab_code_dir, self.results_dir]:
             directory.mkdir(exist_ok=True)
             
     def start_matlab_engine(self):
@@ -222,11 +221,8 @@ class MATLABLoopModeller:
         try:
             import matlab
             
-            # Handle all empty cases (Python empty list, None, "[]", etc.)
-            if (not target_list or 
-                len(target_list) == 0 or 
-                (isinstance(target_list, str) and target_list.strip() in ['[]', '']) or
-                target_list is None):
+            # Handle empty cases (None, empty list, or the string "[]")
+            if not target_list or (isinstance(target_list, str) and target_list.strip() == '[]'):
                 return matlab.double([])
             
             # Convert list of dicts to MATLAB double array
@@ -257,11 +253,8 @@ class MATLABLoopModeller:
         try:
             import matlab
             
-            # Handle all empty cases
-            if (not constraint_list or 
-                len(constraint_list) == 0 or 
-                (isinstance(constraint_list, str) and constraint_list.strip() in ['[]', '']) or
-                constraint_list is None):
+            # Handle empty cases (None, empty list, or the string "[]")
+            if not constraint_list or (isinstance(constraint_list, str) and constraint_list.strip() == '[]'):
                 return matlab.double([])
             
             # Convert to list of floats
@@ -456,13 +449,13 @@ class MATLABLoopModeller:
                 "processing_time": time.time() - start_time
             }
 
-def create_matlab_modeller(matlab_code_dir="matlab_code", results_dir="modelling_results", temp_dir="temp_files") -> MATLABLoopModeller:
+def create_matlab_modeller(matlab_code_dir="matlab_code", results_dir="modelling_results") -> MATLABLoopModeller:
     """Function for creating MATLAB modeller instance"""
     try:
         # Try to import MATLAB engine to check availability
         import matlab.engine
         logger.info("MATLAB Engine for Python is available")
-        return MATLABLoopModeller(matlab_code_dir=matlab_code_dir, results_dir=results_dir, temp_dir=temp_dir)
+        return MATLABLoopModeller(matlab_code_dir=matlab_code_dir, results_dir=results_dir)
     except ImportError:
         logger.error("MATLAB Engine for Python not installed")
         raise ImportError("MATLAB Engine for Python is required but not installed")

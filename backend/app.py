@@ -1,5 +1,5 @@
 # app.py - Main Flask Application Entry Point
-from flask import Flask, request, jsonify, session
+from flask import Flask, jsonify
 from flask_session import Session
 from flask_cors import CORS
 import atexit
@@ -7,15 +7,14 @@ from datetime import timedelta
 from dotenv import load_dotenv
 
 # Import route handlers organised by functionality
-from auth_routes import register, login, verify_otp, logout, auth_resend_otp, session_check
+from auth_routes import register, login, verify_otp, logout, auth_resend_otp
 import os
-from utils import require_auth
 from extensions import db, bcrypt
 from dashboard_routes import dashboard, get_user_jobs, get_dashboard_statistics, get_job_details
 from password_routes import change_password, request_reset, reset_password
 from profile_routes import get_profile, get_user_logs, update_profile, delete_user_logs
-from context import pdb_manager, matlab_available
-from modelling_routes import submit_modelling_job, download_job_results, cancel_job, delete_job, fetch_pdb_structure, modelling_system_status, get_job_with_results
+from context import matlab_available
+from modelling_routes import submit_modelling_job, download_job_results, cancel_job, delete_job, fetch_pdb_structure
 from demo_routes import demo_search_pdb, demo_fetch_pdb, demo_prepare_modelling, demo_submit_modelling, demo_job_download
 from demo_utils import cleanup_expired_demo_jobs
 from logging_config import logger
@@ -86,11 +85,6 @@ def logout_route():
 def resend_otp_route():
     """Resend OTP endpoint"""
     return auth_resend_otp()
-
-@app.route('/auth/session-check', methods=['GET'])
-def session_check_route():
-    """Check if user is currently logged in"""
-    return session_check()
 
 # Password management routes
 @app.route('/auth/change-password', methods=['POST'])
@@ -171,21 +165,11 @@ def delete_job_route(job_id):
     """Delete a completed modelling job"""
     return delete_job(job_id)
 
-@app.route('/api/modelling/job/<job_id>/details', methods=['GET'])
-@require_auth
-def get_job_with_results_route(job_id):
-    """Get job details with modelled structure for visualisation"""
-    return get_job_with_results(job_id)
 
 @app.route('/api/pdb/fetch/<pdb_code>', methods=['GET'])
 def fetch_pdb_structure_route(pdb_code):
     """Fetch protein structure from RCSB Protein Data Bank"""
     return fetch_pdb_structure(pdb_code)
-
-@app.route('/api/modelling/status', methods=['GET'])
-def modelling_system_status_route():
-    """Check if MATLAB and modelling system are available"""
-    return modelling_system_status()
 
 # Demo routes (no authentication required)
 @app.route('/api/demo/pdb/search', methods=['GET'])

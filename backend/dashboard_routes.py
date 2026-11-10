@@ -6,12 +6,7 @@ from pathlib import Path
 import json
 from logging_config import logger
 from modelling_utils import create_error_response
-
-try:
-    import matlab.engine
-    matlab_available = True
-except ImportError:
-    matlab_available = False
+from context import matlab_available
 
 # Dashboard endpoints for authenticated users
 @require_auth
