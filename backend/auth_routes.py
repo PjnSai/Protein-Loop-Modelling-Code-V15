@@ -108,6 +108,7 @@ def verify_otp():
             # Check OTP hasn't expired (5 minute time limit)
             if time.time() - user.otp_sent_time < 300:
                 # Create secure session: discard existing data and issue a new session ID
+                # (session.sid is specific to Flask-Session 0.5; newer versions provide regenerate())
                 session.clear()
                 session.sid = str(uuid.uuid4())
                 session.permanent = True
