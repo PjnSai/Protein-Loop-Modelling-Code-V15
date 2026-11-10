@@ -107,7 +107,8 @@ def verify_otp():
         if user and user.otp_code and secrets.compare_digest(user.otp_code, str(data['otp'])):
             # Check OTP hasn't expired (5 minute time limit)
             if time.time() - user.otp_sent_time < 300:
-                # Create secure session
+                # Create secure session, discarding any existing session data first
+                session.clear()
                 session.permanent = True
                 session['user_id'] = user.id
                 session['user_email'] = user.email
