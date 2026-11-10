@@ -8,8 +8,7 @@ from models import User, ModellingJob
 from extensions import db
 from logging_config import logger
 from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
-
-
+import io
 
 def get_user_job(job_id, user_id):
     """Get job for user with authorisation validation"""
@@ -152,14 +151,14 @@ def download_job_results(job_id):
         
         # Use final model from database instead of full trajectory file for clean visualisation
         if job.final_model_pdb:
-             # Create temporary file with final model only
-            import tempfile
-            with tempfile.NamedTemporaryFile(mode='w', suffix='.pdb', delete=False) as temp_file:
-                temp_file.write(job.final_model_pdb)
-                temp_file_path = temp_file.name
-            
+            # Send the final model from memory; no temporary file is written
             filename = f"{job.pdb_code}_{job.chain}_{job.segment_start}-{job.segment_end}_final_model.pdb"
-            return send_file(temp_file_path, as_attachment=True, download_name=filename, mimetype='chemical/x-pdb')
+            return send_file(
+                io.BytesIO(job.final_model_pdb.encode('utf-8')),
+                as_attachment=True,
+                download_name=filename,
+                mimetype='chemical/x-pdb'
+            )
         else:
             return create_error_response('Final model not available for download', 404)
         

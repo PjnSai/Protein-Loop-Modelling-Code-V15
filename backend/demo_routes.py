@@ -1,7 +1,7 @@
 # demo_routes.py - Demo Mode API Endpoints
 from flask import request, jsonify, send_file
 from datetime import datetime
-import tempfile
+import io
 from logging_config import logger
 from context import demo_job_manager
 from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
@@ -227,16 +227,12 @@ def demo_job_download(job_id):
                 demo_mode=True
             )
         
-        # Create temporary file for download
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.pdb', delete=False) as temp_file:
-            temp_file.write(modelled_content)
-            temp_file_path = temp_file.name
-        
         # Generate descriptive filename
         filename = f"demo_{demo_job['pdb_code']}_{demo_job['parameters']['chain']}_modelled.pdb"
         
+        # Send the modelled structure from memory; no temporary file is written
         return send_file(
-            temp_file_path,
+            io.BytesIO(modelled_content.encode('utf-8')),
             as_attachment=True,
             download_name=filename,
             mimetype='chemical/x-pdb'
