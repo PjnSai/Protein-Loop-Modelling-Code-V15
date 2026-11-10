@@ -168,8 +168,14 @@ def auth_resend_otp():
         return create_error_response('Email required')
 
     user = User.query.filter_by(email=email).first()
-    if user:
-        # Generate and email new OTP code
+
+    # No new codes while the account is locked
+    if user and is_locked(user):
+        log_event(email, 'resend-otp', 'locked', request.remote_addr)
+        return create_error_response('Account temporarily locked. Try again later.', 403)
+
+    # Only resend for a pending login, at most once every 60 seconds
+    if user and user.otp_sent_time and time.time() - user.otp_sent_time >= 60:
         code = ''.join(secrets.choice(string.digits) for _ in range(6))
         user.otp_code = code
         user.otp_sent_time = time.time()
@@ -177,5 +183,5 @@ def auth_resend_otp():
         send_email(user.email, "Your new OTP", f"Your code is {code}")
         log_event(user.email, 'resend-otp', 'success', request.remote_addr)
 
-    # Always return success to prevent email enumeration
-    return jsonify({'message':'If that email is registered, a new OTP has been sent.'}), 200
+    # Same response whether or not the email is registered, to prevent email enumeration
+    return jsonify({'message': 'If that email is registered, a new OTP has been sent.'}), 200
