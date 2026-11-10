@@ -60,3 +60,7 @@ dist-ssr
 #images
 .images
 /images/
+
+/demo-static/
+/frontend-demo/
+/frontend.zip
