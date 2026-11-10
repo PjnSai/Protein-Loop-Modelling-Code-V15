@@ -1,6 +1,6 @@
 # auth_routes.py - Authentication and Session Management
 from flask import request, jsonify, session
-import time, secrets, string
+import time, secrets, string, uuid
 from utils import send_email, log_event, is_pwned, check_password_strength, is_locked, MAX_FAILED_ATTEMPTS
 from models import db, User
 from logging_config import logger
@@ -107,8 +107,9 @@ def verify_otp():
         if user and user.otp_code and secrets.compare_digest(user.otp_code, str(data['otp'])):
             # Check OTP hasn't expired (5 minute time limit)
             if time.time() - user.otp_sent_time < 300:
-                # Create secure session, discarding any existing session data first
+                # Create secure session: discard existing data and issue a new session ID
                 session.clear()
+                session.sid = str(uuid.uuid4())
                 session.permanent = True
                 session['user_id'] = user.id
                 session['user_email'] = user.email
