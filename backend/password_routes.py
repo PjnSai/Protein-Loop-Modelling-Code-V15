@@ -3,7 +3,7 @@ from flask import request, jsonify, session
 from models import db, User
 from utils import send_email, log_event, is_pwned, check_password_strength, require_auth
 from modelling_utils import create_error_response
-import time, random, string
+import time, secrets
 from logging_config import logger
 
 def request_reset():
@@ -21,10 +21,7 @@ def request_reset():
         # Process reset request for existing users only 
         if user:
             # Generate cryptographically secure reset token
-            token = ''.join(random.choices(
-                string.ascii_letters + string.digits, 
-                k=48
-            ))
+            token = secrets.token_urlsafe(32)
             
             # Store token with 10-minute expiration
             user.reset_token = token

@@ -1,6 +1,6 @@
 # auth_routes.py - Authentication and Session Management
 from flask import request, jsonify, session
-import time, random, string
+import time, secrets, string
 from utils import send_email, log_event, is_pwned, check_password_strength, is_locked
 from models import db, User
 from logging_config import logger
@@ -60,7 +60,7 @@ def login():
         # Validate credentials
         if user and user.check_password(data['password']):
             # Generate 6-digit OTP code
-            code = ''.join(random.choices(string.digits, k=6))
+            code = ''.join(secrets.choice(string.digits) for _ in range(6))
             user.otp_code = code
             user.otp_sent_time = time.time()
             user.failed_attempts = 0  # Reset failed attempts on successful login
@@ -154,7 +154,7 @@ def auth_resend_otp():
     user = User.query.filter_by(email=email).first()
     if user:
         # Generate and email new OTP code
-        code = ''.join(random.choices(string.digits, k=6))
+        code = ''.join(secrets.choice(string.digits) for _ in range(6))
         user.otp_code = code
         user.otp_sent_time = time.time()
         db.session.commit()
