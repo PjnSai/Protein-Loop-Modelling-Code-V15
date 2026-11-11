@@ -3,8 +3,12 @@ from flask import request, jsonify, session
 from models import db, User
 from utils import send_email, log_event, is_pwned, check_password_strength, require_auth
 from modelling_utils import create_error_response
-import time, secrets
+import time, secrets, hashlib
 from logging_config import logger
+
+def hash_token(token):
+    """Hash a reset token so only the hash is stored in the database"""
+    return hashlib.sha256(token.encode('utf-8')).hexdigest()
 
 def request_reset():
     """Password Reset Request Endpoint"""
@@ -23,8 +27,8 @@ def request_reset():
             # Generate cryptographically secure reset token
             token = secrets.token_urlsafe(32)
             
-            # Store token with 10-minute expiration
-            user.reset_token = token
+            # Store only the token's hash, with a 10-minute expiry
+            user.reset_token = hash_token(token)
             user.reset_expiry = time.time() + 600  # 10 minutes from now
             db.session.commit()
 
@@ -64,8 +68,8 @@ def reset_password():
         if not data or not all(k in data for k in required_fields):
             return create_error_response('Email, token, and password required')
         
-        # Locate user account with matching email and token
-        user = User.query.filter_by(email=data['email'], reset_token=data['token']).first()
+        # Locate user account with matching email and token hash
+        user = User.query.filter_by(email=data['email'], reset_token=hash_token(str(data['token']))).first()
         
         # Validate token exists and hasn't expired
         if not user or time.time() > user.reset_expiry:
