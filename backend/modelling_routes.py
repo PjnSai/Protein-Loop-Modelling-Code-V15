@@ -7,7 +7,7 @@ from utils import log_event, require_auth
 from models import User, ModellingJob
 from extensions import db
 from logging_config import logger
-from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
+from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling, public_results
 import io
 
 def get_user_job(job_id, user_id):
@@ -118,7 +118,7 @@ def submit_modelling_job():
                 'success': True,
                 'job_id': job_id,
                 'message': 'Modelling completed successfully',
-                'results': result.get('results', {}),
+                'results': public_results(result.get('results')),
                 'processing_time': result.get('processing_time', 0),
                 'parameters': params,
                 'pdb_code': params['pdb_code']
@@ -131,7 +131,7 @@ def submit_modelling_job():
             logger.error(f"Job {job_id} failed: {job.error_message}")
             
             db.session.commit()
-            return create_error_response(result.get('error_message', 'Modelling failed'), 500)
+            return create_error_response('Modelling failed. Please try again later.', 500)
         
     except Exception as e:
         logger.error(f"Submit modelling job error: {e}")

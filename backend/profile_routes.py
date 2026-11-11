@@ -57,7 +57,7 @@ def update_profile():
     except Exception as e:
         logger.error(f"Profile update error: {e}")
         db.session.rollback()
-        return create_error_response(f'Failed to update profile: {str(e)}', 500)
+        return create_error_response('Failed to update profile', 500)
 
 @require_auth
 def get_user_logs():

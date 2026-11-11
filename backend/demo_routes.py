@@ -4,8 +4,7 @@ from datetime import datetime
 import io
 from logging_config import logger
 from context import demo_job_manager
-from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling
-
+from modelling_utils import validate_pdb_code, validate_basic_params, clean_parameters, fetch_pdb_with_analysis, check_matlab_system, create_error_response, run_matlab_modelling, public_results
 def demo_search_pdb():
     """Demo PDB search - validates 4-digit PDB codes only"""
     if request.method == 'OPTIONS':
@@ -184,7 +183,7 @@ def demo_submit_modelling():
                 'demo_mode': True,
                 'parameters': cleaned_params,
                 'pdb_code': demo_job['pdb_code'],
-                'results': result['results'],
+                'results': public_results(result['results']),
                 'processing_time': result.get('processing_time', 0)
             })
         else:
@@ -196,11 +195,8 @@ def demo_submit_modelling():
                 'has_results': False
             })
             
-            return create_error_response(
-                f"MATLAB modelling failed: {result.get('error_message', 'Unknown error')}",
-                500,
-                demo_mode=True
-            )
+            logger.error(f"Demo job {demo_job['job_id']} failed: {result.get('error_message')}")
+            return create_error_response('Modelling failed. Please try again later.', 500, demo_mode=True)
         
     except Exception as e:
         logger.error(f"Demo submission error: {e}")

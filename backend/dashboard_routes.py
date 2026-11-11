@@ -5,7 +5,7 @@ from utils import require_auth
 from pathlib import Path
 import json
 from logging_config import logger
-from modelling_utils import create_error_response
+from modelling_utils import create_error_response, public_results
 from context import matlab_available
 
 # Dashboard endpoints for authenticated users
@@ -25,12 +25,12 @@ def dashboard():
             'email': user.email,
             'session_info': {
                 'user_id': user_id,
-                'login_time': session.get('login_time'),
-                'session_keys': list(session.keys())
+                'login_time': session.get('login_time')
             }
         })
     except Exception as e:
-        return create_error_response(f'Dashboard error: {str(e)}', 500)
+        logger.error(f"Dashboard error: {e}")
+        return create_error_response('Failed to load dashboard', 500)
 
 @require_auth
 def get_user_jobs():
@@ -75,7 +75,8 @@ def get_user_jobs():
         })
         
     except Exception as e:
-        return create_error_response(f'Failed to get jobs: {str(e)}', 500)
+        logger.error(f"Get jobs error: {e}")
+        return create_error_response('Failed to get jobs', 500)
 
 @require_auth
 def get_dashboard_statistics():
@@ -118,7 +119,8 @@ def get_dashboard_statistics():
         })
         
     except Exception as e:
-        return create_error_response(f'Failed to get statistics: {str(e)}', 500)
+        logger.error(f"Get statistics error: {e}")
+        return create_error_response('Failed to get statistics', 500)
     
 @require_auth
 def get_job_details(job_id):
@@ -153,7 +155,7 @@ def get_job_details(job_id):
         if job.error_message:
             job_data['error_message'] = job.error_message
         if job.results_data:
-            job_data['results'] = json.loads(job.results_data)
+            job_data['results'] = public_results(json.loads(job.results_data))
 
         # Handle modelled structure data
         # Try database field first (final model), fallback to file
@@ -183,4 +185,4 @@ def get_job_details(job_id):
         
     except Exception as e:
         logger.error(f"Get job details error: {e}")
-        return create_error_response(f'Failed to get job details: {str(e)}', 500)
+        return create_error_response('Failed to get job details', 500)

@@ -147,6 +147,13 @@ def create_error_response(message, status_code=400, demo_mode=False):
     else:
         return jsonify({'error': message}), status_code
 
+# Result fields kept on the server only: file paths and the full trajectory
+INTERNAL_RESULT_FIELDS = ('output_file', 'output_file_path', 'trajectory_pdb_content')
+
+def public_results(results):
+    """Return a copy of the MATLAB results without internal file paths or the full trajectory"""
+    return {key: value for key, value in (results or {}).items() if key not in INTERNAL_RESULT_FIELDS}
+
 def run_matlab_modelling(job_id, pdb_content, params):
     """Execute MATLAB modelling computation with error handling for both demo and auth"""
     try:
