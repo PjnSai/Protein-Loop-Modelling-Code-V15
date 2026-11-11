@@ -133,6 +133,10 @@ def verify_otp():
                     }
                 })
             else:
+                # Remove the expired code so it can't be used or resent
+                user.otp_code = None
+                user.otp_sent_time = None
+                db.session.commit()
                 log_event(data['email'], 'otp-verify', 'expired', request.remote_addr)
                 return create_error_response('OTP has expired. Please login again.', 401)
         
@@ -177,8 +181,8 @@ def auth_resend_otp():
         log_event(email, 'resend-otp', 'locked', request.remote_addr)
         return create_error_response('Account temporarily locked. Try again later.', 403)
 
-    # Only resend for a pending login, at most once every 60 seconds
-    if user and user.otp_sent_time and time.time() - user.otp_sent_time >= 60:
+    # Only resend for a current pending login: between 1 and 5 minutes after the last code
+    if user and user.otp_sent_time and 60 <= time.time() - user.otp_sent_time < 300:
         code = ''.join(secrets.choice(string.digits) for _ in range(6))
         user.otp_code = code
         user.otp_sent_time = time.time()
